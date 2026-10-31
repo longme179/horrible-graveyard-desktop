@@ -1,0 +1,4 @@
+copr.fedorainfracloud.org/achno/gowall
+copr.fedorainfracloud.org/errornointernet/quickshell
+copr.fedorainfracloud.org/phracek/PyCharm
+copr.fedorainfracloud.org/scottames/awww

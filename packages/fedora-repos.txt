@@ -1,0 +1,18 @@
+repo id                                                   repo name
+Adoptium                                                  Adoptium
+adoptium-temurin-java-repository                          Adoptium
+copr:copr.fedorainfracloud.org:achno:gowall               Copr repo for gowall owned by achno
+copr:copr.fedorainfracloud.org:errornointernet:quickshell Copr repo for quickshell owned by errornointernet
+copr:copr.fedorainfracloud.org:phracek:PyCharm            Copr repo for PyCharm owned by phracek
+copr:copr.fedorainfracloud.org:scottames:awww             Copr repo for awww owned by scottames
+fcitx5-lotus                                              fcitx5-lotus — Fedora 44
+fedora                                                    Fedora 44 - x86_64
+fedora-cisco-openh264                                     Fedora 44 openh264 (From Cisco) - x86_64
+google-chrome                                             google-chrome
+rpmfusion-free                                            RPM Fusion for Fedora 44 - Free
+rpmfusion-free-updates                                    RPM Fusion for Fedora 44 - Free - Updates
+rpmfusion-nonfree                                         RPM Fusion for Fedora 44 - Nonfree
+rpmfusion-nonfree-nvidia-driver                           RPM Fusion for Fedora 44 - Nonfree - NVIDIA Driver
+rpmfusion-nonfree-steam                                   RPM Fusion for Fedora 44 - Nonfree - Steam
+rpmfusion-nonfree-updates                                 RPM Fusion for Fedora 44 - Nonfree - Updates
+updates                                                   Fedora 44 - x86_64 - Updates

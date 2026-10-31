@@ -1,0 +1,12 @@
+yes	dnf
+no	pacman
+no	apt-mark
+yes	flatpak
+no	snap
+no	pip3
+no	npm
+no	pipx
+yes	cargo
+yes	gnome-extensions
+no	gh
+yes	curl

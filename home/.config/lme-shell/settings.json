@@ -1,0 +1,486 @@
+{
+  "shellName": "LME Shell",
+  "language": "en",
+  "animations": true,
+  "opacity": 0.72,
+  "surfaceStyle": "smoked",
+  "liquidGlass": {
+    "tint": "#f0081420",
+    "opacity": 0.65,
+    "brightness": 1.0,
+    "blur": 1.0,
+    "feather": 1.0,
+    "smearing": 1.0,
+    "rim": 1.0,
+    "edgeWidth": 1.0,
+    "passes": 2,
+    "offset": 3.0
+  },
+  "glassSelection": true,
+  "fontPicker": true,
+  "colorPicker": true,
+  "privacyIndicators": true,
+  "dndWhileSharing": true,
+  "desktopEnabled": false,
+  "desktopShapes": true,
+  "desktopWidgets": {},
+  "lyricsEnabled": true,
+  "lyricsOnline": true,
+  "lyricsMode": "line",
+  "lyricsFollow": true,
+  "activityLyrics": true,
+  "bluetoothPairing": true,
+  "mediaStability": true,
+  "mediaControls": true,
+  "batteryDetails": true,
+  "quickNotes": true,
+  "audioVisualizer": true,
+  "desktopShapeCount": 12,
+  "desktopShapeScale": 1.0,
+  "desktopShapeOpacity": 0.14,
+  "desktopShapeSpeed": 1.0,
+  "desktopShapeStyle": "mixed",
+  "desktopShapeRotation": true,
+  "peripheralBatteryAlerts": true,
+  "peripheralBatteryThreshold": 20,
+  "batterySaverBrightness": 70,
+  "mirroringEnabled": true,
+  "recordingEnabled": true,
+  "recordingFolder": "/home/kimhoanglong/Videos/Recordings",
+  "recordingEncoder": "auto",
+  "recordingAudio": "system",
+  "recordingFormat": "mkv",
+  "recordingCodec": "auto",
+  "recordingFps": 30,
+  "recordingBitrate": 12000,
+  "captureEditor": "auto",
+  "fileSearchEnabled": true,
+  "fileSearchRoots": [
+    "/home/kimhoanglong/Documents",
+    "/home/kimhoanglong/Desktop",
+    "/home/kimhoanglong/Downloads",
+    "/home/kimhoanglong/Pictures"
+  ],
+  "osdEnabled": true,
+  "osdPosition": "bottom-center",
+  "osdLayout": "horizontal",
+  "osdMargin": 24,
+  "osdOutput": "focused",
+  "accent": "#72d3f3",
+  "wallpaper": "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-rqod21.png",
+  "density": "comfortable",
+  "appearanceProfiles": [
+    {
+      "name": "Dracula",
+      "accent": "#9580ff",
+      "opacity": 0.9,
+      "density": "comfortable",
+      "animations": true,
+      "springMotion": true,
+      "shapeMorph": true,
+      "animatedTabs": true,
+      "pointerRipple": true,
+      "mediaWave": true,
+      "mediaShapes": true,
+      "motionPreset": "expressive",
+      "motionSpeed": 1.0,
+      "motionBounce": 0.35,
+      "themeOverrides": {},
+      "fontOverrides": {},
+      "fontSize": 14,
+      "activityCompactMaxWidth": 300,
+      "activityPopupMaxWidth": 460,
+      "activityPopupMaxHeight": 0,
+      "paletteSource": "dracula",
+      "palettePreset": "lme-dracula",
+      "paletteScheme": "tonal-spot",
+      "paletteMode": "dark",
+      "paletteContrast": 0.0,
+      "wallpaperPalette": {}
+    }
+  ],
+  "controlLayout": [
+    {
+      "id": "weather",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "charging",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "media",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "resources",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "capture",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "wifi",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "bluetooth",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "microphone",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "dnd",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "stayAwake",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "motion",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "nightLight",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "overview",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "captureScreen",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "captureArea",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "captureWindow",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "volume",
+      "enabled": true,
+      "size": "full"
+    },
+    {
+      "id": "micLevel",
+      "enabled": true,
+      "size": "full"
+    },
+    {
+      "id": "brightness",
+      "enabled": true,
+      "size": "full"
+    },
+    {
+      "id": "powerProfile",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "settings",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "power",
+      "enabled": true,
+      "size": "half"
+    },
+    {
+      "id": "batterySaver",
+      "enabled": true,
+      "size": "half"
+    }
+  ],
+  "controlGrid": {
+    "columns": 8,
+    "rows": 8,
+    "tiles": [
+      {
+        "id": "wifi",
+        "col": 0,
+        "row": 0
+      },
+      {
+        "id": "bluetooth",
+        "col": 2,
+        "row": 0
+      },
+      {
+        "id": "microphone",
+        "col": 3,
+        "row": 0
+      },
+      {
+        "id": "dnd",
+        "col": 4,
+        "row": 0
+      },
+      {
+        "id": "stayAwake",
+        "col": 5,
+        "row": 0
+      },
+      {
+        "id": "motion",
+        "col": 6,
+        "row": 0
+      },
+      {
+        "id": "nightLight",
+        "col": 7,
+        "row": 0
+      },
+      {
+        "id": "overview",
+        "col": 0,
+        "row": 1
+      },
+      {
+        "id": "captureScreen",
+        "col": 2,
+        "row": 1
+      },
+      {
+        "id": "captureArea",
+        "col": 4,
+        "row": 1
+      },
+      {
+        "id": "captureWindow",
+        "col": 6,
+        "row": 1
+      },
+      {
+        "id": "volume",
+        "col": 0,
+        "row": 2
+      },
+      {
+        "id": "micLevel",
+        "col": 4,
+        "row": 2
+      },
+      {
+        "id": "brightness",
+        "col": 0,
+        "row": 3
+      },
+      {
+        "id": "powerProfile",
+        "col": 4,
+        "row": 3
+      },
+      {
+        "id": "settings",
+        "col": 6,
+        "row": 3
+      },
+      {
+        "id": "power",
+        "col": 7,
+        "row": 3
+      },
+      {
+        "id": "batterySaver",
+        "col": 0,
+        "row": 4
+      }
+    ]
+  },
+  "controlWidth": 600,
+  "wallpaperFolder": "/home/kimhoanglong/Pictures/Wallpaper1",
+  "wallpaperPlaylist": [
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-21oyv6.jpg",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-6llg7q.jpg",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-k81oj1.png",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-lyz3d2.png",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-rqod21.png",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-w5m1y7.jpg",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-xeze5z.png",
+    "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-zp5z2w.png"
+  ],
+  "wallpaperPlaylistEnabled": true,
+  "wallpaperPlaylistPaused": false,
+  "wallpaperPlaylistShuffle": true,
+  "wallpaperPlaylistInterval": 300,
+  "wallpaperPlaylistOutput": "",
+  "wallpaperTransition": "random",
+  "wallpaperTransitionDuration": 3.0,
+  "wallpaperOutputs": {},
+  "wallpaperTransitionFps": 60,
+  "wallpaperTransitionStep": 2,
+  "wallpaperTransitionAngle": 45,
+  "wallpaperTransitionPosition": "center",
+  "wallpaperTransitionBezier": "0.54,0,0.34,0.99",
+  "wallpaperTransitionWave": "20,20",
+  "wallpaperResize": "crop",
+  "wallpaperFilter": "Lanczos3",
+  "wallpaperFillColor": "#000000",
+  "launcherRanking": true,
+  "launchpadEnabled": true,
+  "launchpadEntries": {},
+  "notificationMutedApps": [],
+  "dndUntil": 0,
+  "displayLayout": [],
+  "notificationWidth": 380,
+  "notificationPosition": "bar",
+  "notificationMargin": 14,
+  "notificationRadius": 28,
+  "notificationPadding": 16,
+  "notificationOpacity": 0.9,
+  "notificationBorderWidth": 1,
+  "notificationTitleSize": 14,
+  "notificationBodySize": 13,
+  "notificationIdleAnimation": true,
+  "notificationIdleSpeed": 16,
+  "idleEnabled": false,
+  "idleProfiles": {
+    "ac": {
+      "display": 10,
+      "lock": 15,
+      "suspend": 0
+    },
+    "battery": {
+      "display": 3,
+      "lock": 5,
+      "suspend": 15
+    }
+  },
+  "idleLockBeforeSleep": true,
+  "niriConfigPath": "",
+  "popupBlur": true,
+  "barBlur": true,
+  "springMotion": true,
+  "shapeMorph": true,
+  "animatedTabs": true,
+  "pointerRipple": true,
+  "mediaWave": true,
+  "mediaShapes": true,
+  "motionPreset": "jelly-v2",
+  "motionSpeed": 0.5,
+  "motionBounce": 0.35,
+  "themeOverrides": {},
+  "fontOverrides": {
+    "body": "Cantarell Extra Bold"
+  },
+  "fontSize": 16,
+  "activityCompactMaxWidth": 500,
+  "activityPopupMaxWidth": 720,
+  "activityPopupMaxHeight": 720,
+  "paletteSource": "wallpaper",
+  "palettePreset": "ayu-mirage",
+  "paletteScheme": "fidelity",
+  "paletteMode": "dark",
+  "paletteContrast": 0.0,
+  "wallpaperPalette": {
+    "background": "#0f1416",
+    "panel": "#1c2022",
+    "surface": "#262b2d",
+    "text": "#dfe3e5",
+    "muted": "#bdc8cd",
+    "border": "#889297",
+    "green": "#ffb867",
+    "yellow": "#a9ccda",
+    "purple": "#72d3f3",
+    "pink": "#a9ccda",
+    "cyan": "#ffb867",
+    "red": "#ffb4ab",
+    "primaryContainer": "#329cbb",
+    "secondaryContainer": "#2c4e59",
+    "tertiaryContainer": "#c48331",
+    "surfaceContainer": "#1c2022",
+    "surfaceContainerHigh": "#262b2d",
+    "onPrimary": "#003543",
+    "accent": "#72d3f3"
+  },
+  "barEdge": "top",
+  "barEdgeMargin": 6,
+  "barSideMargin": 12,
+  "barHeight": 38,
+  "nightLightEnabled": false,
+  "nightLightMode": "manual",
+  "nightLightTemperature": 4500,
+  "nightLightStart": "20:00",
+  "nightLightEnd": "07:00",
+  "terminal": "kitty",
+  "bluetoothAdapter": "",
+  "tasks": [],
+  "weatherAutoLocation": true,
+  "weatherLocation": {},
+  "weatherUnit": "celsius",
+  "activityEnabled": true,
+  "clipboardEnabled": true,
+  "clipboardImages": true,
+  "clipboardLimit": 100,
+  "barGestures": {},
+  "barStyle": "islands",
+  "barFontSize": 16,
+  "barBorderWidth": 1,
+  "barIslandStyles": {
+    "center": {
+      "fillColor": "#401f263a"
+    },
+    "right": {
+      "borderWidth": 1,
+      "fillColor": "#401f263a",
+      "borderColor": "#85707a8c"
+    },
+    "left": {
+      "borderWidth": 1,
+      "fillColor": "#401f263a"
+    }
+  },
+  "barCorners": {
+    "topLeft": -1,
+    "topRight": -1,
+    "bottomLeft": -1,
+    "bottomRight": -1
+  },
+  "barLayout": {
+    "left": [
+      "launcher",
+      "overview",
+      "workspaces"
+    ],
+    "center": [
+      "activity"
+    ],
+    "right": [
+      "privacy",
+      "clipboard",
+      "tray",
+      "notifications",
+      "audio",
+      "network",
+      "battery",
+      "clock",
+      "settings",
+      "power"
+    ]
+  }
+}

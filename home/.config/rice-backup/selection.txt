@@ -1,0 +1,9 @@
+# rice-backup GUI selection - the SKIPPED (unticked) paths.
+# Format of --exclude-from: one home-relative path per line; a directory
+# entry skips its whole subtree; purely subtractive (never overrides the
+# deny list or the content scan). Edited by the GUI; safe to edit by hand.
+
+.bash_logout
+.bash_profile
+.bashrc
+.local

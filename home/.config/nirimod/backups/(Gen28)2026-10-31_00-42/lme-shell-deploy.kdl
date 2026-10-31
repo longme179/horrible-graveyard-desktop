@@ -1,0 +1,50 @@
+// Managed by LME Shell deploy; edit your main config instead.
+// Start once at login; current session is never killed.
+spawn-at-startup "/home/kimhoanglong/.local/bin/lme-shell" "start"
+window-rule {
+    match app-id="^lme-shell-settings$"
+    match title="^(LME Shell Settings( - Demo)?|LME Screenshot)$"
+    open-floating true
+}
+binds {
+    Mod+Shift+A { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "activity"; }
+    Mod+V { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "clipboard"; }
+    Mod+Shift+Tab { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "overview"; }
+    Mod+Space { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "launcher"; }
+    Mod+A { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "control"; }
+    Mod+N { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "notifications"; }
+    Mod+Comma { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "settings"; }
+    Mod+Shift+E { spawn "/home/kimhoanglong/.local/bin/lme-shell" "toggle" "power"; }
+    Mod+Tab { toggle-overview; }
+}
+// Optional: niri >= 26.04. Merge/include only on a supported niri build.
+// The shell requests blur for glass surfaces and optional full-screen popup overlays.
+// xray=false includes application windows in the blur, rather than wallpaper only.
+// Include this file AFTER generic background-effect rules. Later matching
+// rules win; older snippets may cover the bar/overlay but omit Settings/toasts.
+// Non-xray effects are experimental in niri and may disappear during
+// window open/close animations or while dragging tiled windows.
+layer-rule {
+    match namespace="^lme-(bar|overlay|authentication|desktop|notifications|osd)$"
+    background-effect {
+        xray false
+    }
+}
+window-rule {
+    match app-id="^lme-shell-settings$"
+    // Keep niri's focus-ring backing from filling the transparent window.
+    draw-border-with-background false
+    background-effect {
+        xray false
+    }
+}
+window-rule {
+    geometry-corner-radius 28
+    clip-to-geometry true
+    background-effect {
+        blur true
+    }
+}
+// Start with a moderate budget for the integrated Radeon.
+// This block affects all compositor blur; merge with an existing blur block.
+include "/home/kimhoanglong/.config/lme-shell/liquid-blur.kdl" optional=true
