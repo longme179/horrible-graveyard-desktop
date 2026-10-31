@@ -1,0 +1,129 @@
+# Clipboard history and Activity island
+
+These are original LME integrations informed by iNiR and DankMaterialShell.
+They use the existing Material tonal colors, translucent glass and Roboto.
+There are no new gradients, shaders or background blur requirements.
+
+## Clipboard
+
+Install the new runtime dependency on Fedora:
+
+```bash
+sudo dnf install wl-clipboard
+```
+
+Open **Clipboard** from the modular bar or bind **Super+V**. Search matches the
+full text, including text beyond its visible preview. All/Text/Images filters,
+image previews, pin/unpin, individual deletion and confirmed clearing are
+available. Use Up/Down to select; Enter copies text or opens an image for annotation.
+Click an image to annotate it, right-click its thumbnail to preview it, or use
+its Copy button to copy the original. The panel closes after opening the editor
+or a successful copy. Paste into the destination application with its normal paste
+shortcut. Copying from history does not synthesize typing into another window.
+Copy/search results are delivered individually during rapid input. Enter waits
+for the latest outstanding search; restarting the clipboard worker resets its
+pending operations so reused result sequence numbers cannot leave Copy stuck.
+
+Choose Auto, Satty or Swappy in **Settings → Behavior → Image annotation**.
+Auto prefers installed Satty, then Swappy. Annotation opens a separate copy in
+your Pictures/Screenshots directory, preserving the clipboard history image.
+Screenshot notifications with an attached local image also open the editor when
+clicked, or through their Annotate button. niri's screenshot notification is
+supported even though it provides no native action. Ordinary app icons do not
+trigger annotation.
+
+**Settings → Clipboard** controls capture, image capture and history size
+(20–500 items; default 100). Pause/Resume in the history panel persists across
+shell restarts. Existing history remains accessible when capture is disabled.
+Resuming can capture the currently selected clipboard content.
+
+History is stored locally in `$XDG_STATE_HOME/lme-shell/clipboard`, defaulting to
+`~/.local/state/lme-shell/clipboard`. Text is limited to 1 MiB per item and images
+to 8 MiB. PNG, JPEG, WebP, GIF and BMP are supported; Qt image-format plugins
+may be needed for previewing some formats. Content is deduplicated by exact
+bytes and MIME type. Up to 20 pins survive oldest-first automatic cleanup.
+The payload budget is 64 MiB; image previews, text search indexes and SQLite
+pages consume additional disk space. Directory/database permissions are private
+but history is ordinary unencrypted local storage. Pause before copying content
+you do not want retained. Sensitive-selection hints are skipped when supplied
+by `wl-paste`; applications do not universally supply them.
+
+The shell owns its `wl-paste` watchers and stops them when it exits or capture
+is disabled. A lock prevents duplicate capture by multiple shell instances.
+Do not add a separate `cliphist` watcher for this implementation. Missing tools
+and unavailable Wayland data-control support are reported in the panel.
+Settings alone, demo and preview do not start capture or write the clipboard.
+
+## Activity island
+
+Click the bar's **Activity island** to expand media, focus timer and stopwatch.
+**Super+Shift+A** is provided in the niri fragment. The expanded surface morphs
+using the shell's motion settings; it collapses with Close, Escape or
+an outside click. Turning off animations makes it immediate. The overlay keeps
+the bar's 42 px exclusive zone unchanged and clamps itself to the selected output.
+
+The compact caption prioritizes supported recording, then focus/break timer,
+stopwatch and MPRIS media. With no activity it shows the focused window's title,
+or **Activity Island** when no window is focused. The expanded panel always uses
+**Activity Island** as its heading.
+Media controls honor player capabilities, and a player selector appears when
+multiple MPRIS players are present. A timer or stopwatch started here is the
+same timer shown in Control Center → Agenda. It continues while panels are
+closed; shell restart resets timers. Completion uses the existing notification
+service and respects Do Not Disturb.
+
+Activity Island and Control Center share the same media progress display. For
+tracks with a known duration and position, it shows elapsed/total time and a
+moving wave on the played part. If a browser or stream omits timing metadata,
+it shows a full-width playback wave with **Playback timing unavailable**, without
+an estimated percentage, timestamp or playhead. Timing labels return when the
+player supplies both properties. Each panel follows its selected MPRIS player.
+
+Pausing flattens the wave; closing the panel stops its animation. Disable
+**Appearance → Glass and motion → Wavy media progress** for a straight bar.
+Disabling all animations also flattens it, while known playback position
+continues updating once per second. This display is independent of the optional
+Cava audio spectrum and requires no new package. The browser must expose its
+media session through MPRIS; playback in a browser with that integration disabled
+cannot be detected by the shell.
+
+If a browser is playing but the wave stays flat, first check **Animations** and
+**Wavy media progress** in Appearance. Inspect what the running shell receives:
+
+```bash
+quickshell -c lme-shell ipc call shell mediaStatus
+```
+
+For a `gpt` installation, replace `lme-shell` with `gpt`. This read-only report
+includes Activity Island's selected player, playback state, timing capabilities
+and the two animation settings. It helps distinguish browser metadata from
+shell configuration; it does not include the media title or URL.
+
+Recording status detects the current user's `wf-recorder` and
+`gpu-screen-recorder` processes. It shows process uptime, which includes any
+paused recording time. Stop recording in its application. This feature does
+not start a recorder or detect every browser/portal recording session.
+
+**Settings → Top bar → Activity island** enables the integration. Add/move/remove
+its module like any other bar module. Existing layouts using **Window title**
+gain the expandable activity behavior while the setting is enabled; disable it
+to restore the plain title. New/default layouts include Activity in Center and
+Clipboard in Right. Existing custom layouts are retained. Add Clipboard in
+Settings or use its shortcut; Restore default layout is optional.
+
+For a config installed as `gpt`, substitute `gpt` for `lme-shell` in commands:
+
+```bash
+quickshell -c lme-shell ipc call shell toggle clipboard
+quickshell -c lme-shell ipc call shell toggle activity
+```
+
+## Verify on Fedora + niri
+
+After pulling, install `wl-clipboard`, restart the shell and merge the two new
+bindings into your own niri config after resolving duplicates. Verify text and
+image copy/paste, pins after restart, pause, clear and the size preference.
+Test media controls with your player, timer completion, disabled motion,
+multiple outputs and a recorder you actually use. Cloud checks exercise real
+Wayland/D-Bus APIs with private test fixtures; they do not certify the laptop's
+specific applications or compositor session.

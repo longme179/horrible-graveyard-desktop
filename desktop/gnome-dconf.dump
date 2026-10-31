@@ -99,7 +99,7 @@ welcome-dialog-last-shown-version='50.0'
 locations=@av []
 
 [org/gnome/software]
-check-timestamp=int64 1793338572
+check-timestamp=int64 1793465680
 first-run=false
 security-timestamp=int64 1793338573635178
 update-notification-timestamp=int64 1793338662

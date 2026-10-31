@@ -1,0 +1,17 @@
+singleton ShellState 1.0 ShellState.qml
+singleton Notifications 1.0 Notifications.qml
+singleton FocusTimer 1.0 FocusTimer.qml
+singleton ClipboardState 1.0 ClipboardState.qml
+singleton ActivityState 1.0 ActivityState.qml
+singleton PrivacyState 1.0 PrivacyState.qml
+singleton OSDManager 1.0 OSDManager.qml
+singleton VisualizerState 1.0 VisualizerState.qml
+singleton NotesState 1.0 NotesState.qml
+singleton ControlRegistry 1.0 ControlRegistry.qml
+singleton FeatureCatalog 1.0 FeatureCatalog.qml
+
+singleton BluetoothState 1.0 BluetoothState.qml
+singleton PeripheralBatteries 1.0 PeripheralBatteries.qml
+singleton DesktopState 1.0 DesktopState.qml
+singleton GlassState 1.0 GlassState.qml
+singleton UpdateState 1.0 UpdateState.qml

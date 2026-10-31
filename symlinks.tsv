@@ -1,0 +1,4 @@
+# rel	raw_target	canonical_target	kind	files	bytes
+.config/quickshell/lme-shell	/home/kimhoanglong/lme-fedora-niri-qs	/home/kimhoanglong/lme-fedora-niri-qs	dir	702	26823050
+.local/bin/app-manager	/home/kimhoanglong/Applications/AppManager	/home/kimhoanglong/Applications/AppManager	file	1	43457125
+.local/bin/zed	/home/kimhoanglong/.local/zed.app/bin/zed	/home/kimhoanglong/.local/zed.app/bin/zed	file	1	3118008

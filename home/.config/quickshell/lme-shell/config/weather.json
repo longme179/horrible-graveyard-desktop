@@ -1,0 +1,40 @@
+{
+  "id": "weather",
+  "preferences": {
+    "weatherAutoLocation": {
+      "type": "boolean",
+      "validator": "boolean",
+      "portable": true,
+      "appearance": false,
+      "default": true
+    },
+    "weatherUnit": {
+      "type": "string",
+      "validator": "weatherUnit",
+      "portable": true,
+      "appearance": false,
+      "default": "celsius"
+    },
+    "weatherLocation": {
+      "type": "object",
+      "validator": "weatherLocation",
+      "portable": false,
+      "appearance": false,
+      "default": {}
+    }
+  },
+  "sources": [
+    "qml/panels/WeatherWidget.qml",
+    "scripts/weather.py",
+    "scripts/weather_actions.py"
+  ],
+  "settingsPage": {
+    "key": "weather",
+    "title": "Weather",
+    "icon": "weather-sun",
+    "description": "Local conditions, wherever you are",
+    "keywords": "location city automatic ip forecast celsius fahrenheit temperature",
+    "entry": "qml/settings/WeatherPage.qml",
+    "after": "utilities"
+  }
+}

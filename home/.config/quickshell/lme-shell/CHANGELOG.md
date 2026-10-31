@@ -1,0 +1,200 @@
+# Changelog
+
+## Unreleased
+
+- Avoid false Battery saver conflicts when starting a recording after restore.
+  Share status-read locks and briefly retry guarded writes while a status probe
+  finishes; continue rejecting overlapping hardware transitions.
+
+- Open Settings with its saved appearance from the first visible frame. Wait for
+  the initial theme/runtime snapshot and theme resources before creating the view,
+  detect Liquid blur support before mapping, and reuse queued Gear requests during
+  startup. Keep the existing window through backend reconnects.
+
+- Recognize fractional nominal 60 Hz display timings in Battery saver, including
+  60.003 Hz panels previously left at 120 Hz. Send the exact advertised timing,
+  confirm mode changes and restores, and retain recovery data if niri ignores a
+  request. Report partial hardware support instead of an unconditional success.
+
+- Add a reversible Battery saver switch and Control Center canvas tile. Temporarily
+  use opaque Material surfaces without shell blur, motion, spectrum or floating
+  shapes; cap supported active display modes at 1080p/60 Hz, apply a configurable
+  one-time brightness cap and use the existing power-saving profile. Preserve
+  saved preferences and journal changed hardware values for restore/retry. Keep
+  startup display restore and recording from racing transitions; resume Cava
+  correctly after rapid toggles.
+
+- Avoid a second shell success toast when connecting or disconnecting Bluetooth devices. Keep application notifications, connection errors and device-state updates intact.
+
+- Reclaim abandoned Gowall preview sessions using ownership leases; keep previews in other running instances, bound cache-lock waits and clean owned previews on close. Preserve exported/applied images and prune legacy unleased jobs only after 24 hours.
+
+- Cancel owned command process groups and reject new commands during backend shutdown. Supervise Gowall even if Quickshell kills its backend directly; preserve detached Launchpad jobs, large stdin payloads, command error redaction and clipboard pipe handling.
+
+- Ignore device-scoped power supplies when detecting laptop AC power, including the status fallback used when adapter readings are unavailable.
+
+- Give local notifications a sequence-based ID suffix, so notices created in the same millisecond can be dismissed independently.
+
+- Unregister niri event-stream pipes before closing them. Keep Settings alive through repeated Liquid/Smoked switches and stream reconnects, and reap the stream child on shutdown.
+
+- Refine Liquid's directional rim with exact rounded-box normals, a narrower caustic and shallow inner shading that separates glass from bright apps. Preserve clear interiors, white labels and the existing texture/render-pass budget.
+
+- Show connected peripheral batteries in Control Center → Devices, with a saved alert switch and 5–50% threshold in Behavior. Preserve unknown/0% readings, merge Bluetooth/kernel duplicates and prevent repeated alerts across reconnects within a shell session. Keep device batteries out of the laptop battery aggregate.
+
+- Add Gowall image utilities with installed-theme search, batch palette previews, 2×–4× upscale, color extraction and basic image effects. Export PNGs exclusively or keep a durable copy before applying a wallpaper; setup downloads stay in gowall's explicit terminal prompt.
+- Expose awww FPS, Bezier, direction/origin, wave, scaling/filter and padding controls. Parse empty namespace prefixes in 0.12.1, prevent another backend from cancelling a transition during restore, and disable cache auto-restore only when starting an owned daemon.
+
+- Add a local Launchpad for named binaries and Bash scripts, background/terminal dispatch, per-command logs and launcher search. Expose an optional top bar module and an editor in Shell utilities; keep commands out of portable appearance presets.
+
+- Keep all Liquid labels white, including selected tabs, calendar dates and close buttons on hover. Remove automatic black/white foreground switching; preserve Smoked colors and the shared glass material.
+- Keep the shared glass material when a button supplies its own background. Fix Power's opaque gray fill, cover dropdown triggers, and preserve raw color swatches and intentionally flat hit areas. Reuse existing spring/hover behavior and remove the duplicate tile material.
+- Keep a complete multiword app-name match ahead of more frequently launched apps with longer matching names.
+- Reject oversized wallpaper transition numbers before float conversion. Record popup resize intermediates inside QML so slow IPC reads cannot miss the spring trajectory; keep off-screen entry and settling assertions. Wait for both travel and deformation to settle before checking Jelly layer release.
+- Audit queued wallpaper playback: recheck pause/disable/target changes before starting a scheduled job, validate canonical symlink targets and preserve the current image when all alternatives fail. Ignore malformed launch-history IDs and keep history serialization errors from failing successful launches. Native pixel comparisons wait for a submitted frame after image-state changes.
+- Rank launcher apps by local recency/frequency with seven-day decay, preserving exact/prefix match priority. Add opt-out and clear-history controls; retain at most 256 apps/60 days, without favorites or window tracking.
+- Add ordered/shuffled wallpaper playlists with pause/resume, intervals and awww transitions. Preserve independent display images, restore them after reconnect, and share the same per-output image with Liquid's rim sampler. Wallpaper jobs run in the existing executor with a cross-process lock; no second renderer or polling loop is added.
+- Add an optional refractive selection lens to Settings and Control Center tabs. Reuse the existing velocity-preserving spring edges, shared glass backdrop and press feedback; leave Smoked selection unchanged.
+- Follow niri's floating-window geometry for Liquid rim sampling instead of assuming Settings is centered. Keep geometry tracking off in Smoked and add native-fixture progress diagnostics without relaxing test deadlines.
+- Refine Liquid pointer lighting with localized rim highlights, a soft opposite reflection and velocity-preserving tracking. Fade from the last pointer position and stop its motion drivers when hidden, resting or motion is disabled.
+- Recover ZIP and uncommitted Git installations through an explicit Git-updates button. Keep the original source as a backup, preserve startup paths and preferences, and clear stale HEAD errors.
+- Add independent Liquid glass tint, brightness, opacity, lens blur and rim feather/smearing/width/highlight controls. Preserve the default rendering, include them in shared presets, and expose an opt-in niri blur snippet with compositor-wide scope.
+
+- Audit native UI lifecycle and reject runtime assignment/binding-loop diagnostics in QML regressions. Fix Bluetooth Scan reading an undefined power state before the first backend snapshot.
+
+- Add opt-in Jelly-v2 popup motion: velocity-driven spring deformation, bowed/tapered mesh surfaces, bounded native-window rendering and a software fallback. Keep edge entry/exit and release the effect layer after settling.
+
+- Add independent maximum widths for the compact Activity pill and expanded popup, plus a height limit/Auto fit. Preserve defaults, save limits in appearance profiles and bound live spring resizing to the viewport.
+
+- Add saved full-transcript/current-line lyric modes and default follow in Behavior settings. Show synchronized lines on the compact Activity Island with track-title fallback; share its lookup with media views and replace lyric polling with cue-boundary scheduling adapted from end4-pC.
+
+- Restore spring-driven edge entry and exit for all bar popups. Remove the connecting surface and its setting while preserving custom appearance profiles and old settings imports.
+
+- Fix nested media controls collapsing into a narrow column in Activity Island, Control Center and desktop media cards. Use the available width and reflow when fonts/card sizes change.
+- Keep desktop resize anchored, preserve saved dimensions on smaller outputs and retain drag drafts through unrelated settings updates. Add canvas lifecycle/output and geometry regressions; document setup and shared notes behavior.
+
+- Add synchronized lyrics to media panels with embedded/local LRC support, a bounded disk cache and opt-in LRCLIB lookup. Follow playback or scroll manually without background polling when hidden.
+- Add an optional desktop canvas with per-output clock, notes and media widgets. Persist drag/resize edits independently; support click-through mode and preserve disconnected-output layouts.
+
+- Blur beneath the actual bar glass on supported niri, matching the connected
+  bar or independent island corners and leaving gaps clear. Add a separate,
+  default-on Bar blur preference with preset/backup support.
+- Fly shell panels, Island, authentication, OSD, toasts and QML menus in and out
+  through the same edge. Preserve spring momentum during reversals, prepare menu
+  placement before showing its first frame and bound long-distance bounce.
+- Retain outgoing notification/status content until its exit completes, keep
+  live notification cards stable when others arrive and cap retained toast exits.
+  Closing authentication releases keyboard/input capture immediately.
+- Wait for loader bindings before mounting hidden panels and use stable viewport
+  sizes before Wayland configures each fresh surface. Prevent startup ghosts and
+  keep first/repeated openings on the same complete off-screen path.
+- Keep a flying dropdown from highlighting rows beneath a stationary pointer.
+  Wait for a stale Settings instance to exit before restarting its configuration.
+- Extend the existing frame-clock spring to shared hover/corner feedback, switch
+  thumbs, slider handles and stretching tab indicators. Centralize preset tuning;
+  preserve velocity on target changes and keep indicators/thumbs within bounds.
+- Continue popup motion when its content changes, tween open-panel sizes and
+  unify Island sizing with the same springs. Animate font menus/dropdowns, use
+  monotonic color/hover easing and restore active icon tint. Retain reduced motion
+  and curve-based fallback without adding runtime dependencies.
+- Align Launcher/Wallpaper hover feedback with their selected card corners.
+  Flat hit targets stay inside their frames; scroll gutters protect first/last
+  rows and full-width Font Picker, Audio and Devices controls from clipping.
+- Remove app/wallpaper Favorites controls, ranking and preferences. Older backups
+  still import their remaining settings while retired favorite fields are ignored.
+- Open clipboard images and screenshot notifications in the chosen Satty/Swappy
+  editor. Preserve originals through private saved copies, retain right-click
+  previews and an explicit Copy button, and recognize niri's screenshot icon URI.
+- Remove unused `grim` from the package reference; retain `slurp` for recording
+  regions. Note niri's experimental non-xray blur limits in the config fragment.
+- Let the clipboard service read commands from regular files and exit cleanly
+  with `/dev/null` stdin, using the same selector fallback as the desktop backend.
+- Handle null or malformed weather/search responses with readable errors. Keep
+  the last good forecast after a failed refresh and allow missing daily data.
+- Move Power/Settings into independent 1×1 canvas tiles, power-profile cycling
+  into 2×1, and speaker/microphone/brightness into three 4×1 slider tiles. Add an
+  optional Power bar module and follow advertised profile capabilities.
+- Share button/card metadata and slider handling; remove the superseded slider
+  card and duplicate actions. Keep five card loaders stable across canvas edits,
+  lazily instantiate visible controls, and migrate old visibility/positions.
+- Keep unrelated canvas controls fixed when editing. Move onto empty cells or
+  swap equal-size tiles; incompatible occupied drops cancel instead of repacking.
+- Edit quick controls directly in the Control Center with a 4/8 column and 4/8
+  row canvas. Snap drag/drop, collision handling, keyboard movement and edge
+  scrolling save atomically; Edit mode blocks actions. Keep detailed cards and
+  their visibility/size settings, and include canvas layout in portable presets.
+- Stop clipboard watchers even when Quickshell kills their Python service during
+  reload. Reuse the existing Linux parent-death supervisor instead of leaving
+  orphan capture processes behind.
+- Generate Matugen 4 wallpaper palettes without an interactive terminal by
+  selecting its highest-ranked source color. Keep the Matugen 3 command intact
+  and remove terminal color escapes from backend error messages.
+- Independently customize Left/Center/Right island corners, fill and outline.
+  Connected-bar geometry no longer reshapes the islands; settings transfer keeps
+  each surface, and one shared editor switches between the four targets.
+- Preview/apply 35 Gowall-derived palettes plus LME Dracula without a Gowall
+  runtime dependency. Add Material scheme, dark/light and contrast options;
+  reject stale previews and retain manual colors/fonts and island overrides.
+- Persist recording audio selection with System audio as the default. Verify
+  requested audio tracks with ffprobe before remuxing, retaining videos on failure.
+- Share snapshot fields between shell and Settings. Keep preset data in a static
+  catalog loaded once rather than sending it in every backend state update.
+- Remove fixed release links/badges from README; release publication remains the
+  maintainer's decision.
+
+- Mirror an active niri display onto a connected monitor/projector using the
+  optional Fedora `wl-mirror` package. Source/destination and Start/Stop controls
+  live in Settings → Displays and Control Center → Devices; the shell owns its
+  child, handles disconnects and uses the existing sharing/DND preference.
+- Customize topbar outline thickness, alpha/hex color and all four corner radii.
+  Pill, square and square-left/right presets apply to connected bars and islands.
+  Defaults retain the existing appearance; portable presets include the geometry.
+
+## 2.0 — 2026-10-12
+
+### Added
+
+- NVIDIA-first screen recording with integrated VAAPI and CPU startup fallback.
+  Explicit NVIDIA, Radeon and CPU modes remain available.
+- MKV, MP4, MOV and WebM; video codec, 24/30/60/120 fps and bitrate controls.
+  Recordings start as private MKV files and are remuxed on stop. Failed conversion
+  retains the original, and existing files are never replaced.
+- External Satty/Swappy annotation from Screenshot studio. A saved, flattened PNG
+  preserves strokes/redactions and remains available after closing the studio.
+- Recording and annotation settings in portable presets; helper diagnostics and
+  updated Fedora package guidance.
+
+### Fixed
+
+- Rediscover commands installed after shell startup and handle minimal niri PATHs.
+- Use desktop-sized NVENC preflight frames instead of 128×128 frames rejected by
+  the RTX's minimum dimensions; retain leading errors rather than cleanup tails.
+- Select workspaces with one stable-ID IPC action instead of a redundant
+  `focus-monitor` action that recenters the pointer.
+
+### Improved
+
+- Cava now emits 60 fps with `noise_reduction=20`; spectrum heights follow frames
+  without a second 50 ms easing animation. The visible/playback lifecycle remains.
+- README includes the maintainer's current demo, a clearer installation path,
+  customization overview, dependency map and update instructions.
+
+### Validation and upgrading
+
+- 187 tests passed with every private Wayland opt-in enabled, no skips; QML lint
+  passed for changed components. Fixtures include recorder failures, real FFmpeg
+  remux/decode, workspace socket requests and immediate spectrum attack/release.
+- The maintainer confirmed H.264 NVENC preflight at 1920×1080, 30 fps and
+  12,000 kbps with exit code 0 and supplied the release demo recording.
+- Saved preferences remain separate from the checkout. Older CPU defaults saved
+  before recording-format controls migrate once to Auto; explicitly selecting
+  CPU with the new controls is preserved.
+- niri 26.04+ is needed for recording/native popup blur. NVENC/VAAPI codec support
+  depends on the local FFmpeg and GPU driver. Niri cursor-warp rules remain under
+  compositor control. No drivers or system packages are installed automatically.
+
+[Compare 1.9 → 2.0](https://github.com/longme179/lme-fedora-niri-qs/compare/1.9...2.0)
+· [Detailed behavior and hardware limits](docs/FEATURE_PORTS.md)
+
+## 1.9
+
+[Previous release](https://github.com/longme179/lme-fedora-niri-qs/releases/tag/1.9)
+· [Changes from 1.0](https://github.com/longme179/lme-fedora-niri-qs/compare/1.0...1.9)

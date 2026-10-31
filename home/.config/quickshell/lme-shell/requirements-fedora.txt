@@ -1,0 +1,108 @@
+# LME Shell runtime requirements for Fedora 44, x86_64.
+# This is a human-readable DNF package list, not a pip requirements file.
+# Quickshell needs version 0.3.2 or newer with PipeWire, Polkit and Wayland/BackgroundEffect support.
+# Availability of quickshell in Fedora 44 enabled repositories must be checked
+# locally. Upstream also documents the errornointernet/quickshell COPR fallback.
+
+[required-shell]
+# User-triggered GitHub updates in Settings > About (Git checkout installations).
+git
+quickshell
+python3
+# Gio/GLib for the on-demand BlueZ pairing agent (no GTK UI dependency).
+python3-gobject-base
+qt6-qtbase
+qt6-qtdeclarative
+qt6-qtwayland
+qt6-qtsvg
+qt6-qtimageformats
+google-noto-sans-fonts
+google-roboto-fonts
+google-noto-color-emoji-fonts
+adwaita-icon-theme
+
+[required-desktop-integration]
+# niri >= 25.11; full-screen popup blur additionally needs niri >= 26.04.
+niri
+NetworkManager
+pipewire
+pipewire-utils
+pipewire-pulseaudio
+wireplumber
+brightnessctl
+bluez
+systemd
+util-linux
+polkit
+wl-clipboard
+# Clipboard history uses Python stdlib SQLite; cliphist is not needed.
+# util-linux supplies rfkill for scoped Bluetooth software-block recovery.
+
+[power-profile-provider-choose-one]
+# Fedora's existing tuned-ppd is suitable. Do not install both providers.
+tuned-ppd
+# Alternative only if you deliberately use it instead of tuned-ppd:
+power-profiles-daemon
+
+[optional-tools]
+# Existing preferred alternatives can be configured in the shell settings.
+kitty
+nautilus
+firefox
+pavucontrol
+network-manager-applet
+blueman
+# Required for session locking and enabled laptop idle profiles:
+swaylock
+swayidle
+# Needed for Night Light and local screenshot OCR respectively:
+wlsunset
+tesseract
+tesseract-langpack-eng
+tesseract-langpack-vie
+libnotify
+playerctl
+xdg-utils
+xdg-desktop-portal
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+gnome-keyring
+# Optional wallpaper daemon; --optional installs it when available from enabled repositories.
+# Upstream: https://codeberg.org/LGFae/awww.git (client and awww-daemon).
+awww
+# Optional screenshot annotation and recording-region selection.
+# Screenshot studio uses niri capture, Qt Canvas annotations and Tesseract OCR.
+# slurp selects regions for screen recording.
+# External annotation: Fedora 44 supplies Swappy; Satty is supported if installed separately.
+swappy
+slurp
+
+# System monitor and keybind viewer use Python stdlib only.
+# Native popup blur uses Quickshell Wayland BackgroundEffect; no capture/shader package.
+
+[optional-selected-ports]
+# Real media spectrum (starts only for visible enabled media cards):
+cava
+
+# Material palette preview (isolated dry-run, no GTK/terminal templates):
+matugen
+
+# Start/stop owned screen recording; requires niri >= 26.04 screencopy:
+wf-recorder
+# Selected codecs/driver must be present; ffmpeg-free may omit NVENC or VAAPI codecs.
+ffmpeg-free
+# Optional recording audio and region picker:
+pulseaudio-utils
+slurp
+
+# Optional external-display mirroring (Fedora repositories):
+wl-mirror
+
+[optional-image-studio]
+# Gowall v0.2.4: upstream binary, not installed automatically by setup.sh.
+# https://github.com/Achno/gowall/releases
+gowall
+# Upscale additionally needs Vulkan and gowall's Real-ESRGAN model setup.
+# Use Shell utilities > Gowall > Setup in terminal for gowall's own download prompt.
+vulkan-loader
+mesa-vulkan-drivers

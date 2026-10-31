@@ -1,0 +1,238 @@
+{
+  "cards": [
+    {
+      "id": "weather",
+      "title": "Weather",
+      "size": "full"
+    },
+    {
+      "id": "charging",
+      "title": "Battery charging",
+      "size": "full"
+    },
+    {
+      "id": "media",
+      "title": "Media player",
+      "size": "full"
+    },
+    {
+      "id": "resources",
+      "title": "System resources",
+      "size": "full"
+    },
+    {
+      "id": "capture",
+      "title": "Recording & capture status",
+      "size": "full"
+    }
+  ],
+  "tiles": [
+    {
+      "id": "wifi",
+      "title": "Wi-Fi",
+      "icon": "wifi",
+      "cols": 2,
+      "col": 0,
+      "row": 0
+    },
+    {
+      "id": "bluetooth",
+      "title": "Bluetooth",
+      "icon": "bluetooth",
+      "cols": 1,
+      "col": 2,
+      "row": 0
+    },
+    {
+      "id": "microphone",
+      "title": "Microphone",
+      "icon": "microphone",
+      "cols": 1,
+      "col": 3,
+      "row": 0
+    },
+    {
+      "id": "dnd",
+      "title": "Do not disturb",
+      "icon": "bell-off",
+      "cols": 1,
+      "col": 0,
+      "row": 1
+    },
+    {
+      "id": "stayAwake",
+      "title": "Stay awake",
+      "icon": "clock",
+      "cols": 1,
+      "col": 1,
+      "row": 1
+    },
+    {
+      "id": "motion",
+      "title": "Motion",
+      "icon": "refresh",
+      "cols": 1,
+      "col": 2,
+      "row": 1
+    },
+    {
+      "id": "nightLight",
+      "title": "Night Light",
+      "icon": "weather-sun",
+      "cols": 1,
+      "col": 3,
+      "row": 1
+    },
+    {
+      "id": "overview",
+      "title": "Overview",
+      "icon": "overview",
+      "cols": 2,
+      "col": 0,
+      "row": 2
+    },
+    {
+      "id": "captureScreen",
+      "title": "Screen capture",
+      "icon": "camera",
+      "cols": 2,
+      "col": 2,
+      "row": 2
+    },
+    {
+      "id": "captureArea",
+      "title": "Select area",
+      "icon": "camera",
+      "cols": 2,
+      "col": 0,
+      "row": 3
+    },
+    {
+      "id": "captureWindow",
+      "title": "Focused window",
+      "icon": "overview",
+      "cols": 2,
+      "col": 2,
+      "row": 3
+    },
+    {
+      "id": "volume",
+      "title": "Volume",
+      "icon": "audio",
+      "cols": 4,
+      "col": 0,
+      "row": 4
+    },
+    {
+      "id": "micLevel",
+      "title": "Microphone level",
+      "icon": "microphone",
+      "cols": 4,
+      "col": 0,
+      "row": 5
+    },
+    {
+      "id": "brightness",
+      "title": "Brightness",
+      "icon": "weather-sun",
+      "cols": 4,
+      "col": 0,
+      "row": 6
+    },
+    {
+      "id": "powerProfile",
+      "title": "Power profile",
+      "icon": "battery",
+      "cols": 2,
+      "col": 0,
+      "row": 7
+    },
+    {
+      "id": "settings",
+      "title": "Settings",
+      "icon": "settings",
+      "cols": 1,
+      "col": 2,
+      "row": 7
+    },
+    {
+      "id": "power",
+      "title": "Power",
+      "icon": "power",
+      "cols": 1,
+      "col": 3,
+      "row": 7
+    },
+    {
+      "id": "batterySaver",
+      "title": "Battery saver",
+      "icon": "battery",
+      "cols": 1,
+      "col": 0,
+      "row": 8
+    }
+  ],
+  "tabs": [
+    {
+      "id": "controls",
+      "title": "Controls",
+      "entry": "ControlDashboard",
+      "legacyIndex": 0,
+      "refresh": true
+    },
+    {
+      "id": "audio",
+      "title": "Audio",
+      "entry": "AudioMixer",
+      "legacyIndex": 1
+    },
+    {
+      "id": "devices",
+      "title": "Devices",
+      "entry": "DeviceControls",
+      "legacyIndex": 2,
+      "refresh": true
+    },
+    {
+      "id": "agenda",
+      "title": "Agenda",
+      "entry": "Agenda",
+      "legacyIndex": 3
+    },
+    {
+      "id": "system",
+      "title": "System",
+      "entry": "SystemMonitor",
+      "legacyIndex": 5,
+      "fallback": true
+    }
+  ],
+  "agendaTabs": [
+    {
+      "id": "calendar",
+      "title": "Calendar",
+      "entry": "CalendarWidget",
+      "legacyIndex": 0
+    },
+    {
+      "id": "tasks",
+      "title": "To do",
+      "entry": "TasksWidget",
+      "legacyIndex": 1
+    },
+    {
+      "id": "timer",
+      "title": "Timer",
+      "entry": "TimerWidget",
+      "legacyIndex": 2,
+      "fallback": true
+    },
+    {
+      "id": "notes",
+      "title": "Notes",
+      "entry": "QuickNotes",
+      "legacyIndex": 3,
+      "setting": "quickNotes"
+    }
+  ]
+}

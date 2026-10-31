@@ -1,0 +1,553 @@
+<h1 align="center">LME Shell</h1>
+
+<p align="center"><strong>Material 3 Expressive meets smoked glass.<br>A personal desktop shell for Fedora and niri.</strong></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Fedora-44-51a2da?style=flat-square" alt="Fedora 44">
+  <img src="https://img.shields.io/badge/niri-26.04%2B-80ffea?style=flat-square" alt="niri 26.04 or newer for all integrations">
+  <img src="https://img.shields.io/badge/Quickshell-0.3.2%2B-ff80bf?style=flat-square" alt="Quickshell 0.3.2 or newer">
+</p>
+
+<p align="center">
+  <a href="#preview">Preview</a> · <a href="#installation">Install</a> · <a href="#features">Features</a> · <a href="#make-it-yours">Personalize</a> · <a href="#documentation">Documentation</a> · <a href="CHANGELOG.md">Changelog</a>
+</p>
+
+LME is a desktop shell built with **Quickshell and QML/Qt Quick**. It includes a
+modular bar, an expandable Activity island and a standalone Settings app, with
+translucent panels, spring animations, Dracula-inspired colors and Roboto fonts.
+The interface and documentation are in English.
+
+First run uses one connected top bar, a centered Activity island and a Control
+Center on the right. Choose your own modules, colors, fonts, spacing and motion
+without editing QML. **Settings → Shell utilities** contains Launchpad and the optional Gowall image studio; advanced awww controls live under **Wallpaper**.
+
+## Preview
+
+![Control Center in edit mode, with draggable tiles and sliders over a blurred desktop](https://github.com/user-attachments/assets/429d8285-dc0d-4803-bb44-198c4b884b35)
+
+https://github.com/user-attachments/assets/3efede13-30c6-45e3-b623-f73e7e535920
+
+<details>
+<summary><strong>More screenshots</strong></summary>
+
+**Activity island**
+
+![Compact Activity island showing media playback](https://github.com/user-attachments/assets/5b235203-1ff5-4a7f-9dd3-46c53d1b21ca)
+
+<table>
+  <tr>
+    <th width="55%">Control Center</th>
+    <th width="45%">Wi-Fi</th>
+  </tr>
+  <tr>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/0266766e-0ec2-44f1-a6ab-4e21be98d63f" alt="Control Center with weather, charging, media, system statistics and recording controls" width="480"></td>
+    <td valign="top"><img src="https://github.com/user-attachments/assets/49043d58-ed26-49ce-b79a-d4ae3bd276fe" alt="Wi-Fi panel showing the connected network and saved networks" width="380"></td>
+  </tr>
+</table>
+
+</details>
+
+## Features
+
+| Feature | Details |
+| --- | --- |
+| **Modular bar** | Enable, reorder and move modules; choose a connected bar or separate islands, top/bottom placement and distance from the screen edge. Assign left/right/middle click and scroll actions per module. Includes workspace switching and a tray dropdown. |
+| **Activity island** | Seek, play/pause, shuffle/repeat where supported, focus/break timer, stopwatch and recording controls. Set maximum pill/popup dimensions in Appearance. Audio visualization uses Cava; media cards share the same controls. |
+| **Control Center** | Drag toggles, actions and sliders on a scrolling canvas. Power/Settings use 1×1 cells; power profiles cycle in 2×1; volume, microphone and brightness each use 4×1. Hide buttons independently and arrange detailed cards. |
+| **Launcher** | Fuzzy app search with optional local usage ranking, calculator, emoji, open windows and file/folder search. Exact matches keep priority; usage history can be disabled or cleared. |
+| **Launchpad** | Save and rename binaries or Bash scripts, run in the background or your terminal, and find commands in the launcher. Add its optional top bar module or use Shell utilities. |
+| **Shell utilities** | Gowall theme search, palette conversion, color extraction, 2×–4× upscale and batch previews; save processed PNGs or use them as wallpaper. Awww controls include transition FPS/Bezier/direction, scaling and filters. |
+| **Lyrics** | Choose a scrolling transcript or current line, follow playback by default, and show synchronized lines on Activity Island. Embedded/local LRC and cache work offline; LRCLIB lookup is optional. |
+| **Desktop canvas** | Place clock, notes and media widgets per display. Drag and resize in Edit mode, then keep them below apps or make them click-through. |
+| **Wallpaper playback** | Build an ordered or shuffled playlist, pause/resume, set an interval and choose awww transitions. Use a shared image or independent images per display; keep assignments for disconnected displays. |
+| **Everyday tools** | Clipboard text/images with search, pins and image annotation; grouped, persistent notifications with [appearance controls](docs/NOTIFICATIONS.md) and a rotating Material emblem; timed DND; calendar, tasks and autosaved notes. |
+| **Laptop controls** | Weather with automatic or manual location, supported Lenovo charging modes, AC/battery idle profiles, system monitoring and display settings with automatic revert. |
+| **Battery saver** | A reversible Control Center toggle for opaque Material surfaces, reduced motion, supported display modes up to 1080p/60 Hz, a starting brightness cap and the system's power-saving profile. |
+| **Device batteries** | Headphone, mouse and keyboard battery readings in Control Center → Devices, with configurable low-battery alerts. Uses BlueZ and kernel readings; devices that do not report a percentage stay marked as unavailable. |
+| **Screen capture and Night Light** | Record a screen or selected region; annotate/redact screenshots with built-in tools or Satty/Swappy; extract text with local OCR; schedule Night Light. |
+| **Top bar styling** | Style the connected bar or each island separately. Adjust corners, borders, colors and transparency, with live updates from Settings. Popups slide from the nearest screen edge with spring momentum and return through the same edge. |
+| **Themes and fonts** | Smoked glass by default, optional Liquid glass, per-element colors and fonts, searchable font menus, HSV/alpha color picker, appearance profiles, 35 Gowall palette presets plus LME Dracula, and Material wallpaper palettes. |
+
+## Installation
+
+For one-command Fedora deployment **including niri config integration**:
+
+```bash
+./deploy.sh                         # Read-only plan, from your checkout
+./deploy.sh --install --copr --build-quickshell --charge-helper
+```
+
+It verifies the actual Quickshell APIs, backs up and validates niri edits, and
+records a diff with rollback instructions. Run as your desktop user; DNF/sudo
+prompt for privileged steps. Log out/in to switch session agents cleanly.
+See [deployment details and exactly what changes](docs/DEPLOYMENT.md).
+The `setup.sh` flow below keeps niri integration manual.
+
+### Requirements
+
+The supported target is **Fedora 44 with an existing niri Wayland session**.
+Use **niri 26.04+** for recording and native popup blur; basic shell integration
+supports niri 25.11+. LME supplies the desktop interface; niri manages windows.
+
+| Requirement | Purpose |
+| --- | --- |
+| Quickshell **0.3.2+** | Runs the shell; its build needs PipeWire, Polkit and Wayland/BackgroundEffect support |
+| Matching Qt 6 runtime | Qt Quick, Wayland, SVG and image support |
+| Python 3 | Desktop integration using the standard library |
+| Roboto and Noto fonts | UI typography, fallback characters and emoji |
+| Fedora desktop services | NetworkManager, BlueZ, PipeWire/WirePlumber and an existing power-profile provider |
+
+[requirements-fedora.txt](requirements-fedora.txt) groups packages by purpose.
+It is a **DNF package list**, not a Python requirements file. The setup helper
+also installs niri; use your existing Fedora login/session setup and GPU drivers.
+
+### 1. Keep a permanent checkout
+
+Install Git and Python with `sudo dnf install git python3` if needed, then run:
+
+```bash
+mkdir -p ~/src
+git clone https://github.com/longme179/lme-fedora-niri-qs.git ~/src/lme-fedora-niri-qs
+cd ~/src/lme-fedora-niri-qs
+```
+
+This checkout tracks `main`. You can also use GitHub’s **Code → Download ZIP**
+and extract it into a permanent directory. Run the following commands from
+that source directory, and keep it after installation: the installed shell
+links to it.
+
+### 2. Install the shell and its tools
+
+Run as your normal desktop user, **without `sudo` in front of the script**:
+
+```bash
+# Preview everything; no packages or files are changed.
+./scripts/setup.sh
+
+# Install packages, link the shell and add Settings to the app launcher.
+./scripts/setup.sh --install
+```
+
+The installer uses DNF and asks for your administrator password when needed.
+It includes core and recommended tools: fonts, clipboard history, locking,
+Night Light, OCR/annotation, recording, audio visualization, Material palettes
+and display mirroring. It installs `awww` when available from your enabled
+repositories; otherwise it points to the [wallpaper setup steps](docs/INSTALL.md#wallpaper-and-charging).
+Keep your working TuneD/tuned-ppd or power-profiles-daemon provider.
+
+| Option | Use it when… |
+| --- | --- |
+| `--copr` | Quickshell is unavailable; you have reviewed the [Quickshell COPR](https://copr.fedorainfracloud.org/coprs/errornointernet/quickshell/) and want to allow it as a fallback |
+| `--replace` | An older config or Settings launcher already exists; preserve it in a timestamped backup before replacing it |
+| `--charge-helper` | You want to install the privileged helper for Lenovo battery charging controls |
+
+Options can be combined, for example:
+
+```bash
+./scripts/setup.sh --install --copr --charge-helper
+```
+
+The shell links to this checkout, so keep it in place. Preferences in
+`~/.config/lme-shell` are preserved. Setup prints the niri integration steps;
+it leaves your existing keybindings, GPU setup and desktop services in place.
+For individual package/link installers, see [the full guide](docs/INSTALL.md).
+
+### 3. Test inside niri
+
+If niri is new to this system, log out and choose **niri** in your login screen
+first. Inside that session:
+
+```bash
+./scripts/doctor.sh
+./scripts/start.sh
+```
+
+`doctor.sh` reports missing tools and session integration. `start.sh` restores
+your saved wallpaper/display settings and launches the shell. Keep the terminal
+open while testing; Ctrl+C stops that instance. Start it only if LME is not
+already running.
+
+To explore a windowed demo with sample data, use `./scripts/start.sh --preview`.
+
+### 4. Integrate with niri
+
+Review [the integration fragment](config/niri/lme-shell.kdl), then add this to
+`~/.config/niri/config.kdl` for the default installation:
+
+```kdl
+include "~/.config/quickshell/lme-shell/config/niri/lme-shell.kdl"
+```
+
+It starts LME at login, supplies its shortcuts and opens Settings/Screenshot
+studio as floating windows. Remove or rebind conflicting keys before including
+it, especially `Mod+Comma` and `Mod+Shift+E` from niri's sample config. Keep one
+shell startup entry and one notification server/Polkit agent in your session.
+LME includes its own notification server and password popup.
+
+For **live blur behind the bar and popups** on niri 26.04+, also add:
+
+```kdl
+include "~/.config/quickshell/lme-shell/config/niri/popup-blur.kdl"
+```
+
+Place this include **after other background-effect rules**. Use the current file:
+older manually copied snippets may omit Settings and notification toasts. Niri
+defaults to wallpaper-only xray blur when no matching rule disables it.
+
+**Settings → Appearance** has separate **Blur behind the bar** and
+**Blur behind popups** switches, both enabled by default. Then validate:
+
+```bash
+niri validate
+```
+
+Merge any existing `blur` block instead of defining it twice. The supplied rule
+uses `xray false`, keeping live applications beneath the blur. The dim layer
+animates; native blur intensity is region-based and does not interpolate.
+[More about capture, blur and motion](docs/CAPTURE_NIGHT_MOTION.md).
+
+## Make it yours
+
+Open Settings from either gear button, the application launcher, **Super+Comma**,
+or `./scripts/settings.sh`. It runs in its own window and shares saved preferences
+with the shell, even when the shell is stopped.
+
+Choose **Appearance → Shell name** to give your desktop a name of your own.
+
+**Appearance → Surface style → Liquid glass** combines a frosted backdrop,
+refractive edges and white text. On niri 26.04+, blur follows the rounded panel
+or popup; the surrounding desktop stays sharp. Include the blur configuration
+above. Turn Liquid off to return to your saved colors, opacity and full-screen
+blur preference. Fonts, layout, corner shapes and motion keep their settings;
+bar blur remains independently configurable. The
+[rendering details and limits](docs/CONFIGURATION.md#surface-style) explain the
+wallpaper-based edge effect and software fallback.
+
+In **Appearance → Liquid glass material**, choose a tint with the color picker
+or a hex code, then adjust brightness, tint opacity, lens blur, feather, smearing
+and rim width/highlights. These settings stay separate from your Smoked theme.
+**Reset glass** restores the original material.
+Highlights follow the pointer with a short spring response and fade from its
+last position. Rim strength, feather and brightness also shape these reflections.
+
+To change the real backdrop blur, adjust its passes/spread and click **Save niri
+blur snippet**. Include the generated file once, after `popup-blur.kdl`:
+
+```kdl
+include "~/.config/lme-shell/liquid-blur.kdl"
+```
+
+Run `niri validate` after adding the include. Later saves reload automatically.
+Use your `XDG_CONFIG_HOME` path if different. Niri controls blur strength globally,
+so this also affects other windows requesting blur and Smoked mode. Lens blur
+only softens the refractive rim; higher backdrop blur values cost more GPU time.
+
+![LME Settings showing popup blur, spring motion, shape morphing and animation presets](https://github.com/user-attachments/assets/5a87fa0e-b7d2-47a4-968b-f78510552d0a)
+
+| Page | Customize |
+| --- | --- |
+| **Appearance** | Shell display name, accent, smoked glass opacity, density, profiles, spring/morph motion, Smooth/Expressive/Jelly/Jelly-v2 presets and bar/popup blur |
+| **Elements and fonts** | Individual color roles, hex input, HSV/alpha picker, installed fonts and text size |
+| **Top bar / Control center** | Module/card order, visibility, sizes, bar position/margins and panel width |
+| **Displays / Idle and sleep** | Resolution, refresh, scale and output placement; AC/battery timeouts, locking and suspend |
+| **Wallpaper / Weather** | Image library, playlists, transitions, per-display images, palette preview, automatic/manual location and units |
+| **Desktop widgets** | Add clock/notes/media, choose an output, enable click-through and arrange widgets in Edit mode |
+| **Behavior** | Battery saver, lyrics and online lookup, Bluetooth pairing, privacy, OSD layout, notes, file search, recording, external editor and settings transfer |
+| **Keyboard shortcuts / Clipboard** | Search niri bindings; configure history and image capture |
+
+Jump to a page with `./scripts/settings.sh --page topbar`. Use
+`./scripts/settings.sh --demo` for a Settings preview without saving changes.
+
+Preferences live in `~/.config/lme-shell/settings.json`, separate from the
+Quickshell source. Updates preserve them; saved choices override factory defaults.
+If you set `XDG_CONFIG_HOME`, use that directory instead of `~/.config`.
+Automatic idle management and Night Light start disabled.
+
+**Share a preset:** use **Behavior → Settings export and restore → Export preset**.
+Use the exported JSON to share your setup; it excludes personal paths, location,
+device IDs and tasks. Import validates fields and backs up
+current settings. Private backups include personal settings and should stay
+private. Clipboard/notification history and notes are separate from settings
+backups. [Configuration guide](docs/CONFIGURATION.md).
+
+### Battery saver
+
+Turn on **Battery saver** in the Control Center canvas or **Settings → Behavior**.
+If its tile is hidden in an existing layout, enable it in **Settings → Control
+center**, then place it using the canvas's Edit mode.
+
+While enabled, LME uses opaque Material surfaces and stops its blur, animations,
+audio spectrum and floating shapes. Your saved Liquid glass, colors, transparency
+and motion preferences stay unchanged and return when you turn Battery saver off.
+
+For active displays above 1920 × 1080 or 60 Hz, LME selects a supported mode at or
+below those limits, keeping scale and position. Displays already below the limits
+stay unchanged. Nominal 60 Hz modes may have fractional timings such as 60.003 Hz;
+LME uses the exact driver timing and confirms it after switching. This works from
+the driver's reported modes rather than a laptop-brand list. Unsupported modes
+are reported. It does not invent custom modes or automatically recap displays
+connected later. Finish any display preview before enabling Battery saver, and
+stop screen recording before toggling it. Wallpaper playlists pause temporarily;
+manual wallpaper changes use no transition.
+
+The starting brightness cap defaults to **70%** and is adjustable in Behavior.
+It lowers brightness once if needed; it never raises a dimmer screen. Brightness
+keys and sliders remain available afterward. The system power profile switches
+to `power-saver` when supported by the existing TuneD/tuned-ppd or
+power-profiles-daemon service; no provider replacement is needed.
+
+Turning Battery saver off restores the display, backlight and power values it
+changed. A separate restore journal retains the original values through shell
+restarts. If a device or service is unavailable during restore, Settings shows
+the error and keeps the pending values: reconnect the device or service, then
+turn the switch off again to retry. A new niri session discards its predecessor's
+temporary display overrides; turn Battery saver off and on to cap the new session.
+Keep `battery-saver.json` beside your settings local; it is not part of shared presets.
+LME's effects are controlled here; application and niri animations remain under
+their own configuration.
+
+### Desktop widgets
+
+Enable **Settings → Desktop widgets → Floating wallpaper shapes** for
+theme-colored Material shapes that drift behind apps on every display, with or
+without media. Adjust their count, size, opacity, speed, shape style and rotation
+on the same page. Turning the option off removes the shapes completely; the
+global **Animations** switch pauses them in place. They never intercept clicks.
+This option starts off and is independent of the widgets and media-card shapes.
+
+The canvas starts disabled. To set it up:
+
+1. Open **Settings → Desktop widgets**, enable it, then choose **Add clock**, **Add notes** or **Add media**.
+2. Choose a display for each widget. Turn **Interactive** off to let clicks pass through; **Visible** hides a widget without removing its saved layout.
+3. Click **Edit on desktop**. Drag the header grip to move a widget, resize its lower-right corner, then press **Done**. Focus the grip and use arrow keys to move it; Shift makes one-pixel adjustments.
+
+Outside Edit, widgets sit below application windows, so an app can cover them.
+You can add a **Desktop widgets** module in **Settings → Top bar** to toggle Edit.
+The canvas supports up to 12 widgets. Notes widgets share the existing Quick notes
+buffer; removing a widget leaves the note intact.
+
+**Primary display** follows the first connected output. A widget assigned to a
+named output stays saved while that output is absent. If a widget is missing,
+check its Visible switch and display selection, or choose Primary display.
+Moving a widget on a smaller output preserves its saved size. Layouts are
+included in settings export/import; note contents are stored separately.
+
+### Media and lyrics
+
+Activity Island, Control Center and desktop media widgets use MPRIS. Click or
+drag the timeline to seek. Shuffle/repeat stay disabled when the player does not
+support them; this is common in browsers.
+
+Click **Lyrics** in a media card. Embedded lyrics, a local `.lrc` sidecar and the
+cache work without online lookup. To search LRCLIB, enable online lookup under
+**Settings → Behavior → Lyrics**. Choose **Full transcript · scroll** or **Current
+line**, and whether the transcript follows playback by default. Manual scrolling
+pauses follow; press **Follow** to resume.
+
+Activity Island shows the current synchronized line while playing and falls
+back to the track title when lyrics or timing are unavailable. You can turn this
+off separately. Online lookup is off by default; enabling it sends track metadata
+when an open lyrics view or the playing Island needs lyrics. Matches depend on
+the supplied title/artist; a YouTube channel or video title may not identify a song. [Lyrics and media guide](docs/CONFIGURATION.md#synchronized-lyrics).
+
+## Optional integrations
+
+| Feature | What to install or configure |
+| --- | --- |
+| **Wallpaper** | Setup installs `awww` when available from enabled repositories; verify that both `awww` and `awww-daemon` are present. [Setup](docs/INSTALL.md#wallpaper-and-charging) · [Upstream](https://codeberg.org/LGFae/awww) |
+| **Material palette / Audio spectrum** | `matugen` / `cava`. Cava runs for visible, playing media cards, with 60 fps and reduced smoothing. |
+| **External display mirroring** | `wl-mirror` (Fedora: `sudo dnf install wl-mirror`). Connect and enable both outputs, then use Settings → Displays or Control Center → Devices. Choose Source/Destination and Start mirror; Stop closes only LME’s mirror window. [Setup and hardware checks](docs/MIRRORING.md). |
+| **Recording** | `wf-recorder`, compatible FFmpeg/`ffprobe`; `pulseaudio-utils` for audio and `slurp` for regions. Auto tries NVIDIA NVENC → integrated VAAPI → CPU, probing only when capture starts. Chosen codecs depend on your driver/build. |
+| **External annotation / OCR** | Fedora `swappy`, or separately installed Satty; `tesseract` and language packs for local OCR. Click clipboard images or screenshot notifications to open a saved copy in your chosen editor. Screenshot studio exports flattened PNGs including redactions. |
+| **Night Light / Idle** | `wlsunset` with working gamma control; `swayidle` and `swaylock` for idle profiles. Enable these in Settings. |
+| **Lyrics** | No extra package. Optional LRCLIB lookup needs internet access; player metadata/local LRC and cached lyrics work offline. |
+| **Weather** | Internet access for Open-Meteo and approximate IP location; no API key needed. Manual location is available. |
+| **Lenovo charging** | Install the helper with `sudo ./scripts/install-charge-helper.sh --install`. Adjustable thresholds depend on firmware; some machines expose only a fixed conservation mode. [Charging guide](docs/CHARGING.md) |
+
+The optional package set includes most tools above. `ffmpeg-free` may omit NVENC
+or other chosen codecs; a working GPU driver and compatible encoder build are
+required. LME does not install or replace GPU drivers. Recording format, codec,
+FPS, bitrate and fallback details are in [the feature guide](docs/FEATURE_PORTS.md).
+
+## Shortcuts
+
+Active after including the niri fragment. `Mod` normally means **Super/Windows**.
+
+| Shortcut | Action |
+| --- | --- |
+| `Mod+Space` | Application launcher |
+| `Mod+A` | Control Center |
+| `Mod+Comma` | Settings |
+| `Mod+Tab` / `Mod+Shift+Tab` | niri live overview / themed workspace board |
+| `Mod+N` / `Mod+V` | Notification history / clipboard history |
+| `Mod+Shift+A` | Activity island |
+| `Mod+Shift+E` | Power menu |
+| `Escape` | Close an open shell panel |
+
+The bar's Overview button opens niri's live overview; right-click opens the
+workspace board. The Settings keybind viewer reads your niri config and includes.
+
+## Updates
+
+In **Settings → About → Shell updates**, click **Check for updates**, then
+**Update shell**. This fetches `origin/main` and fast-forwards a clean `main`
+checkout. Local edits, untracked files and divergent commits block the update;
+they are never reset or stashed automatically. The job continues if Settings
+closes or Quickshell reloads. Restart the shell and Settings after it completes.
+Git is required. For a ZIP installation, including a folder with `git init` but
+no commits, click **Enable Git updates**. The updater clones the official `main`
+branch into a sibling folder ending in `-git`, preserves your original source
+as `.backup-<timestamp>-<pid>`, and links the old path to the new checkout. Keep
+the new folder; your existing startup path still works. A failed download leaves
+the original installation in place. Existing Git histories are never replaced.
+Package changes are reviewed separately through `setup.sh`.
+
+<details>
+<summary><strong>My older install reports “ambiguous argument HEAD”</strong></summary>
+
+`git init` creates a Git folder, but does not download commits or configure
+`origin`. If **Enable Git updates** is missing, run the current updater once:
+
+```bash
+curl --fail --location https://raw.githubusercontent.com/longme179/lme-fedora-niri-qs/main/scripts/shell_update.py --output /tmp/lme-shell-updater.py
+python3 /tmp/lme-shell-updater.py bootstrap --repo ~/.config/quickshell/lme-shell
+```
+
+The second command starts the backup-and-clone job described above. Read its
+status with `python3 /tmp/lme-shell-updater.py inspect --repo ~/.config/quickshell/lme-shell`.
+Wait for `"stage": "updated"`, then restart the shell and Settings. Substitute
+your installed path if it differs. Do not delete the helper while the job runs.
+This route never replaces a checkout that already has a valid commit.
+
+</details>
+
+For a Git checkout tracking `main`, run from the permanent source directory:
+
+```bash
+git pull --ff-only
+quickshell -c lme-shell kill
+./scripts/start.sh
+```
+
+Restart Settings as well. If an update adds dependencies, use `./scripts/setup.sh`
+to preview and `./scripts/setup.sh --install` to install them. For a release ZIP
+installation, extract into a permanent directory and run
+`./scripts/setup.sh --install --replace` to update the default targets with backups.
+Custom config names use the individual installers below.
+
+<details>
+<summary><strong>I use a configuration named gpt</strong></summary>
+
+Keep the checkout outside `~/.config/quickshell/gpt`, then link it and start with
+that configuration name:
+
+```bash
+./scripts/install.sh --replace --target "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/gpt"
+./scripts/install-settings.sh --replace
+./scripts/start.sh --config gpt
+```
+
+Replace `lme-shell` with `gpt` in niri includes, startup and IPC bindings. The
+supplied fragment targets `lme-shell` by default, so adapt it before inclusion.
+To restart this instance, use `quickshell -c gpt kill` and
+`./scripts/start.sh --config gpt`. Preferences still use `lme-shell/settings.json`.
+
+</details>
+
+## Documentation
+
+| Guide | Covers |
+| --- | --- |
+| [Installation](docs/INSTALL.md) | Fedora packages, sources, niri setup, custom paths and services |
+| [Configuration](docs/CONFIGURATION.md) / [Personalization](docs/PERSONALIZATION.md) | Preferences, profiles, colors, typography, geometry and expressive feedback |
+| [Selected feature ports](docs/FEATURE_PORTS.md) | Detailed controls, dependencies, tests and hardware limits |
+| [Capture, Night Light and motion](docs/CAPTURE_NIGHT_MOTION.md) | Screenshot drawing/redaction/OCR, external annotation, schedules and animations |
+| [Laptop features](docs/LAPTOP_FEATURES.md) | System monitor, idle profiles, keybindings and native blur |
+| [Clipboard and Activity](docs/CLIPBOARD_ACTIVITY.md) | History, pins, timers, media and recording status |
+| [Charging](docs/CHARGING.md) / [Authentication](docs/AUTHENTICATION.md) | Firmware support, helper setup and password prompts |
+| [Troubleshooting](docs/TROUBLESHOOTING.md) / [Validation](docs/VALIDATION.md) | Diagnosis, development checks and what has been tested |
+| [Architecture](docs/ARCHITECTURE.md) / [Roadmap](docs/ROADMAP.md) / [Agent state](docs/STATE.md) | Module contracts, current coverage, remaining work and development rules |
+| [Resource limits](docs/RESOURCE_LIMITS.md) / [Release checks](docs/RELEASE_CHECKLIST.md) | Bounded command output/logs, relay ownership and laptop sign-off |
+
+## Help and development
+
+Run `./scripts/doctor.sh` first. For Settings startup errors, run
+`./scripts/settings.sh --page appearance` in a terminal and confirm you updated
+the installed configuration. For wallpaper-only blur, check the blur include and
+`xray false`. For pointer movement, remove an enabled `warp-mouse-to-focus` rule
+if unwanted; niri owns that policy.
+
+[Report a problem](https://github.com/longme179/lme-fedora-niri-qs/issues) with
+reproduction steps, logs, doctor output, `niri --version` and `qs --version`.
+
+For a one-shot RAM inventory, run `python3 scripts/memory_report.py --label steady`,
+then repeat with Settings open and during ordinary use. It reports per-process
+PSS/RSS, all detected LME instances and detached relays; `--json` prints structured
+output and `--pid PID` adds confirmed missing helpers. Review the ownership and
+incomplete-report notes in [Release checks](docs/RELEASE_CHECKLIST.md) before
+accepting a whole-shell total. This command does not change the running shell.
+
+Wi-Fi keeps the selected network open after a connection error so you can retry. Repeated password prompts fail early; a 15-second authentication guard preserves the longer timeout for IP configuration. Closing the dialog during an attempt lets it continue. Enterprise networks use Advanced network settings.
+
+Bluetooth Connect/Disconnect runs in the background so other shell controls remain responsive. Wi-Fi accepts one connection/profile/radio change at a time; scans can still run independently.
+
+Pair new Bluetooth devices from Control Center → Devices, including PIN and passkey confirmation. Install `python3-gobject-base` for the pairing agent. Blueman and the network editor remain available for external device settings and enterprise Wi-Fi.
+
+Settings exports preserve existing files and clean up failed writes so you can retry. Notification history is installed in the backend only after it has been saved successfully.
+
+Run `./scripts/check.sh` for backend regressions, script syntax and demo state.
+Native UI checks require a private Wayland session. See [validation details](docs/VALIDATION.md)
+for test coverage and hardware-specific limitations.
+
+Shared backend infrastructure lives in `scripts/command_runner.py` (subprocesses,
+tool lookup and errors), `scripts/storage.py` (private JSON writes and file locks),
+`scripts/content_types.py` (text byte limit, image signatures and image-path validation),
+and `scripts/action_pending.py` (JSON-line acknowledgement and ownership projection).
+The original backend, display and Clipboard imports remain available for compatibility.
+Pairing and device batteries share pure normalization in `scripts/peripheral_values.py`;
+the original `peripheral_battery` and `wallpaper` value imports remain compatible.
+Display preview and Battery saver share validation and runner-injected layout
+application in `scripts/display_layout.py`; `display_control` retains its old exports.
+Converted pages, panels, bar entries and bootstraps are registered through
+[config/features.json](config/features.json).
+Preference definitions are assembled by `scripts/settings_schema.py` from descriptor
+fragments and `config/preferences-legacy.json`.
+OSD, peripheral battery alerts, saver brightness, mirroring, lyrics, file search
+and Bluetooth preferences use schema-only records: disabling those records
+retains settings and does not withdraw legacy UI.
+Settings stay in the same flat JSON file, and Clipboard keeps its worker protocol.
+`scripts/backend_actions.py` dispatches sync/worker actions through narrow callbacks;
+the host retains scheduling/completion and unconverted live/demo routes.
+Page-to-page Settings links use a local `navigateRequested(pageId)` adapter.
+See the [roadmap](docs/ROADMAP.md) for current migration coverage, remaining legacy
+contracts and release criteria; the [migration log](docs/MIGRATION_LOG.md) records checks.
+
+Start development tasks with [current agent state](docs/STATE.md).
+`./scripts/check-architecture.sh` checks static dependencies, cycles and source sizes;
+its legacy exceptions are recorded in `config/architecture.json`.
+The [release checklist](docs/RELEASE_CHECKLIST.md) records scoped combined-session
+PSS and remaining laptop checks; private lifecycle passes do not certify the RAM budget.
+Use `./scripts/run-gates.sh --gates G0` for isolated checks; the
+[migration log](docs/MIGRATION_LOG.md) records final milestone summaries.
+
+## Credits and license
+
+Inspired by [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland),
+[iNiR](https://github.com/snowarch/iNiR),
+[DankMaterialShell](https://github.com/AvengeMedia/DankMaterialShell),
+[Caelestia](https://github.com/caelestia-dots/shell) and
+[Noctalia](https://github.com/noctalia-dev/noctalia).
+
+**Based on iNiR by snowarch (https://github.com/snowarch/inir)**. Upstream morph
+geometry and recording workflow adaptations are modified for LME; copyright,
+licenses and the iNiR notice are retained.
+
+LME's original code is **GPL-3.0-or-later**, with retained GPL-3.0-only terms in
+adapted upstream components. The optional Liquid renderer and local launch-score decay adapt
+[Serpantinum](https://github.com/ilyamiro/serpantinum) by Illia Miroshnichenko,
+under **AGPL-3.0-or-later**. GPLv3 section 13 permits this combination; the
+combined work follows AGPLv3's interaction requirements while individual files
+retain their licenses. See [LICENSE](LICENSE), [THIRD_PARTY.md](THIRD_PARTY.md)
+and `third_party/` for attribution and licensing. Purchased Dracula Pro assets
+and fonts are not bundled. Demo wallpaper and artwork belong to their respective
+creators.

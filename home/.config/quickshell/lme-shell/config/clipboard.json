@@ -1,0 +1,64 @@
+{
+  "id": "clipboard",
+  "sources": [
+    "qml/services/ClipboardState.qml",
+    "scripts/clipboard.py"
+  ],
+  "bar": {
+    "id": "clipboard",
+    "title": "Clipboard",
+    "detail": "Search text and image history",
+    "icon": "clipboard",
+    "entry": "qml/bar/ClipboardButton.qml",
+    "after": "privacy"
+  },
+  "settingsPage": {
+    "key": "clipboard",
+    "title": "Clipboard",
+    "icon": "clipboard",
+    "description": "Text and images, ready when you need them",
+    "keywords": "history capture copy paste image pin",
+    "entry": "qml/settings/ClipboardPage.qml",
+    "after": "notifications"
+  },
+  "panel": {
+    "id": "clipboard",
+    "entry": "qml/panels/ClipboardPanel.qml",
+    "centered": true,
+    "scrim": 0.4
+  },
+  "bootstrap": {
+    "id": "clipboard",
+    "entry": "qml/panels/ClipboardFeature.qml"
+  },
+  "gesture": {
+    "id": "clipboard",
+    "title": "Clipboard",
+    "after": "launchpad"
+  },
+  "preferences": {
+    "clipboardEnabled": {
+      "type": "boolean",
+      "default": true,
+      "portable": true,
+      "appearance": false,
+      "validator": "boolean"
+    },
+    "clipboardImages": {
+      "type": "boolean",
+      "default": true,
+      "portable": true,
+      "appearance": false,
+      "validator": "boolean"
+    },
+    "clipboardLimit": {
+      "type": "integer",
+      "default": 100,
+      "min": 20,
+      "max": 500,
+      "portable": true,
+      "appearance": false,
+      "validator": "integer"
+    }
+  }
+}

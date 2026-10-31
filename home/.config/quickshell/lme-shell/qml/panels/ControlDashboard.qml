@@ -1,0 +1,339 @@
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Quickshell
+import Quickshell.Services.Mpris
+import "../services"
+import "../theme"
+import "../components"
+
+Item {
+    id: root
+    implicitWidth: 386
+    implicitHeight: 710
+    focus: true
+    readonly property var network: ShellState.system.network || {}
+    readonly property bool wifiConnected: network.wifiConnected === undefined ? !!network.connected : !!network.wifiConnected
+    readonly property var bluetooth: ShellState.system.bluetooth || {}
+    readonly property var microphone: ShellState.system.microphone || {}
+    readonly property var battery: ShellState.system.battery || {}
+    readonly property var players: ShellState.demo ? [] : Mpris.players.values
+    property string selectedPlayerName: ""
+    readonly property var player: players.find(item => item.dbusName === selectedPlayerName) || players.find(item => item.isPlaying) || players[0] || null
+    MediaPresentation { id: mediaPresentation; player: root.player; enabled: ShellState.preferences.mediaStability !== false }
+    readonly property var mediaDisplay: mediaPresentation.current
+    readonly property date now: clock.date
+    property bool editing: false
+    property alias grid: quickGrid
+    readonly property var cards: (ShellState.preferences.controlLayout || []).filter(item => ControlRegistry.cardIds.includes(item.id))
+    readonly property var cardComponents: ({weather: ShellState.settingsPageAvailable("weather") ? weatherModule : null, charging: chargingModule, media: mediaModule, resources: resourcesModule, capture: captureModule})
+
+    function numeric(value, suffix) {
+        return value === null || value === undefined ? "—" : Math.round(value) + (suffix || "");
+    }
+
+    SystemClock { id: clock; precision: SystemClock.Minutes; enabled: root.visible }
+    Keys.onEscapePressed: event => { if (root.editing) event.accepted = false; else ShellState.closePanels(); }
+
+    component Tile: LiquidButton {
+        id: tile
+        required property string label
+        required property string detail
+        property bool active: false
+        property color accent: Theme.purple
+        property string iconName: "settings"
+        Layout.fillWidth: true
+        implicitHeight: Theme.compact ? 82 : 90
+        leftPadding: 8; rightPadding: 8; topPadding: 8; bottomPadding: 8
+        opacity: root.editing || enabled ? 1 : .35
+        Accessible.name: label + ": " + detail
+        background: Rectangle {
+            MotionValue { id: tileRadius; target: tile.active ? 24 : 16 }
+            radius: Theme.springMotion ? tileRadius.value : tile.active ? 24 : 16
+            color: tile.active ? Theme.liquidGlass ? Theme.alpha(tile.accent, tile.hovered ? .12 : .08)
+                : Theme.mix(Theme.panel, tile.accent, tile.hovered ? 0.38 : 0.28) : Theme.surfaceContainerHigh
+            border.color: tile.activeFocus ? tile.accent : tile.active ? Theme.alpha(tile.accent, 0.48) : Theme.border
+            border.width: 1
+            opacity: root.editing || tile.enabled ? 1 : 0.5
+            Behavior on radius { enabled: !Theme.springMotion && Theme.animations; MotionAnimation {} }
+            Behavior on color { ColorMotion {} }
+        }
+        contentItem: GridLayout {
+            columns: tile.width < 150 ? 1 : 2; rowSpacing: 5; columnSpacing: 10
+            ShellIcon { name: tile.iconName; color: tile.active ? tile.accent : Theme.text; Layout.preferredWidth: 24; Layout.preferredHeight: 24; Layout.alignment: Qt.AlignHCenter }
+            ColumnLayout {
+                Layout.fillWidth: true; Layout.preferredWidth: 1; spacing: 4
+                ShellText { Layout.fillWidth: true; wrapMode: Text.Wrap; maximumLineCount: 2; elide: Text.ElideRight; horizontalAlignment: tile.width < 150 ? Text.AlignHCenter : Text.AlignLeft; text: tile.label; color: Theme.text; font.family: Theme.fontFamily; font.pixelSize: tile.width < 150 ? 12 : 14; font.weight: Font.Bold }
+                ShellText { visible: tile.width >= 150; Layout.fillWidth: true; text: tile.detail; textFormat: Text.PlainText; elide: Text.ElideRight; color: Theme.muted; font.family: Theme.fontFamily; font.pixelSize: 12 }
+            }
+        }
+    }
+
+    component Caption: ShellText {
+        color: Theme.muted
+        font.family: Theme.fontFamily
+        font.pixelSize: 12
+    }
+
+    Flickable {
+        id: scroll
+        anchors.fill: parent; anchors.margins: 8
+        contentWidth: width; contentHeight: body.implicitHeight + 8
+        clip: true; boundsBehavior: Flickable.StopAtBounds
+        ScrollBar.vertical: ScrollBar {}
+        ColumnLayout {
+            id: body; x: 4; y: 4; width: scroll.width - 16; spacing: Theme.cardSpacing
+            RowLayout {
+                Layout.fillWidth: true
+                ColumnLayout {
+                    spacing: 4
+                    ShellText { text: Qt.formatDateTime(root.now, "hh:mm"); color: Theme.text; font.family: Theme.fontFamily; font.pixelSize: 32; font.weight: Font.Bold }
+                    Caption { text: Qt.locale("en_US").toString(root.now, "dddd, MMMM d") }
+                }
+                Item { Layout.fillWidth: true }
+                LiquidButton { text: "Lock"; enabled: !root.editing; onClicked: { ShellState.closePanels(); ShellState.run("lock"); } }
+            }
+            ControlGrid {
+                id: quickGrid
+                Layout.fillWidth: true
+                editing: root.editing; dragLayer: root; viewport: scroll
+                components: ({wifi: wifiModule, bluetooth: bluetoothModule, microphone: microphoneModule, dnd: ShellState.settingsPageAvailable("notifications") ? dndModule : null,
+                    stayAwake: ShellState.settingsPageAvailable("idle") ? stayAwakeModule : null, motion: motionModule, nightLight: ShellState.settingsPageAvailable("nightLight") ? nightLightModule : null, overview: overviewModule,
+                    captureScreen: screenModule, captureArea: areaModule, captureWindow: windowModule,
+                    volume: volumeModule, micLevel: micLevelModule, brightness: brightnessModule, powerProfile: powerProfileModule,
+                    batterySaver: batterySaverModule, settings: settingsModule, power: powerModule})
+            }
+            LiquidButton { visible: root.editing; text: "Reset grid"; enabled: quickGrid.ready; onClicked: quickGrid.reset() }
+            GridLayout {
+                id: content; Layout.fillWidth: true
+                columns: width >= 500 ? 2 : 1
+                columnSpacing: 12; rowSpacing: Theme.cardSpacing
+                Repeater {
+                    model: ControlRegistry.cards.length
+                    delegate: Loader {
+                        id: card
+                        required property int index
+                        readonly property var modelData: root.cards[index] || null
+                        objectName: "controlCard-" + (modelData ? modelData.id : "")
+                        active: modelData !== null && modelData.enabled && root.cardComponents[modelData.id] !== null
+                        enabled: !root.editing
+                        visible: active
+                        Layout.fillWidth: true; Layout.preferredWidth: 1
+                        Layout.columnSpan: content.columns === 1 || modelData && modelData.size === "full" ? content.columns : 1
+                        Layout.preferredHeight: item ? (item as Item).implicitHeight : 0
+                        sourceComponent: modelData ? root.cardComponents[modelData.id] : null
+                    }
+                }
+            }
+            LabelText { visible: !(ShellState.preferences.controlLayout || []).some(m => m.enabled); text: "All widgets are hidden. Use Edit layout to restore them."; wrapMode: Text.Wrap; Layout.fillWidth: true; color: Theme.muted }
+        }
+    }
+    Component {
+        id: weatherModule
+        WeatherWidget {}
+    }
+    Component {
+        id: chargingModule
+        ChargingWidget {}
+    }
+    Component {
+        id: wifiModule
+        Tile {
+            label: "Wi-Fi"; iconName: "wifi"
+            detail: !root.network.available ? "Unavailable" : root.wifiConnected ? root.network.ssid || "Connected" : root.network.enabled ? "Not connected" : "Turned off"
+            active: !!root.network.enabled
+            enabled: !!root.network.available
+            accent: Theme.cyan
+            onClicked: ShellState.togglePanel("wifi")
+        }
+    }
+    Component {
+        id: bluetoothModule
+        Tile {
+            label: "Bluetooth"; iconName: "bluetooth"
+            detail: ShellState.pendingActions.bluetoothToggle ? "Changing power…" : root.bluetooth.hardBlocked ? "Hardware blocked" : root.bluetooth.softBlocked ? "Software blocked" : !root.bluetooth.available ? "No adapter" : root.bluetooth.enabled ? "Powered on" : "Turned off"
+            active: !!root.bluetooth.enabled
+            enabled: !!root.bluetooth.available && !root.bluetooth.hardBlocked && !ShellState.pendingActions.bluetoothToggle
+            onClicked: ShellState.run("bluetoothToggle")
+        }
+    }
+    Component {
+        id: microphoneModule
+        Tile {
+            label: "Microphone"; iconName: "microphone"; detail: !root.microphone.available ? "Unavailable" : root.microphone.muted ? "Muted" : "Ready to record"
+            active: !!root.microphone.available && !root.microphone.muted; enabled: !!root.microphone.available
+            accent: Theme.pink; onClicked: ShellState.run("micMute")
+        }
+    }
+    Component {
+        id: dndModule
+        Tile { label: "Do not disturb"; iconName: "bell-off"; detail: Notifications.dnd ? "Popups silenced" : "Notifications enabled"; active: Notifications.dnd; accent: Theme.yellow; onClicked: Notifications.setDnd(Notifications.dnd ? 0 : -1) }
+    }
+    Component {
+        id: stayAwakeModule
+        Tile { label: "Stay awake"; iconName: "clock"; detail: ShellState.stayAwake ? "Idle sleep inhibited" : "Normal idle behavior"; active: ShellState.stayAwake; accent: Theme.green; onClicked: ShellState.stayAwake = !ShellState.stayAwake }
+    }
+    Component {
+        id: motionModule
+        Tile { label: "Motion"; iconName: "refresh"; detail: ShellState.batterySaverActive ? "Managed by Battery saver" : Theme.animations ? Theme.motionPreset[0].toUpperCase() + Theme.motionPreset.slice(1) + " · " + Theme.motionSpeed.toFixed(1) + "×" : "Reduced motion"; active: Theme.animations; enabled: !ShellState.batterySaverActive; onClicked: ShellState.run("setting", {key: "animations", value: !Theme.animations}) }
+    }
+    Component {
+        id: batterySaverModule
+        Tile {
+            objectName: "batterySaverTile"
+            label: "Battery saver"; iconName: "battery"; accent: Theme.green
+            readonly property var state: ShellState.snapshot.batterySaver || {}
+            active: ShellState.batterySaverActive
+            detail: state.busy ? "Applying changes…" : state.error ? "Needs attention · Settings" : active ? "Saving power" : "Normal settings"
+            enabled: ShellState.backendReady && !state.busy && !ShellState.pendingActions.batterySaver
+            onClicked: ShellState.run("batterySaver", {enabled: !ShellState.batterySaverActive})
+        }
+    }
+    Component {
+        id: nightLightModule
+        Tile {
+            label: "Night Light"; iconName: "weather-sun"; accent: Theme.yellow
+            readonly property var night: ShellState.snapshot.nightLight || {}
+            active: !!night.active
+            detail: night.error ? "Needs attention · Settings" : night.active ? (night.temperature || 4500) + " K" : ShellState.preferences.nightLightEnabled ? "Scheduled" : "Turned off"
+            onClicked: if (night.error || night.available === false) ShellState.openSettingsPage("nightLight"); else ShellState.run("setting", {key: "nightLightEnabled", value: !ShellState.preferences.nightLightEnabled})
+        }
+    }
+    Component { id: volumeModule; ControlSlider { channel: "volume"; editing: root.editing } }
+    Component { id: micLevelModule; ControlSlider { channel: "micLevel"; editing: root.editing } }
+    Component { id: brightnessModule; ControlSlider { channel: "brightness"; editing: root.editing } }
+    Component {
+        id: powerProfileModule
+        Tile {
+            label: "Power profile"; iconName: "battery"
+            readonly property var profiles: ShellState.system.powerProfiles || ["power-saver", "balanced", "performance"]
+            readonly property int profile: profiles.indexOf(ShellState.system.powerProfile)
+            active: profile >= 0 && ShellState.system.powerProfile !== "balanced"
+            accent: ShellState.system.powerProfile === "power-saver" ? Theme.green : Theme.pink
+            detail: ({"power-saver": "Power saver", balanced: "Balanced", performance: "Performance"})[ShellState.system.powerProfile] || "Unavailable"
+            enabled: !ShellState.batterySaverActive && profile >= 0 && profiles.length > 1 && !ShellState.pendingActions.powerProfile
+            onClicked: ShellState.run("powerProfile", {value: profiles[(profile + 1) % profiles.length]})
+        }
+    }
+    Component { id: settingsModule; Tile { label: "Settings"; detail: "Shell preferences"; iconName: "settings"; onClicked: ShellState.togglePanel("settings") } }
+    Component { id: powerModule; Tile { label: "Power"; detail: "Lock, sleep or shut down"; iconName: "power"; accent: Theme.pink; onClicked: ShellState.togglePanel("power") } }
+    Component {
+        id: mediaModule
+        Rectangle {
+            Layout.fillWidth: true
+            implicitHeight: media.implicitHeight + 28
+            MediaAmbient { anchors.fill: parent; anchors.margins: 12; playing: ShellState.demo ? ActivityState.demoPlaying : !!root.player && root.player.isPlaying }
+            radius: Theme.smallRadius
+            color: Theme.surface
+            GlassMaterial { anchors.fill: parent; radius: parent.radius }
+            ColumnLayout {
+                id: media
+                anchors.fill: parent
+                anchors.margins: 14
+                spacing: 10
+                RowLayout {
+                    Layout.fillWidth: true
+                    Rectangle {
+                        Layout.preferredWidth: 48
+                        Layout.preferredHeight: 48
+                        radius: 10
+                        color: Theme.panel
+                        clip: true
+                        Image { anchors.fill: parent; source: root.mediaDisplay ? root.mediaDisplay.artUrl : ""; retainWhileLoading: true; sourceSize.width: 96; sourceSize.height: 96; fillMode: Image.PreserveAspectCrop; asynchronous: true }
+                        ShellText { anchors.centerIn: parent; visible: !root.mediaDisplay || !root.mediaDisplay.artUrl; text: "♫"; color: Theme.pink; font.pixelSize: 26 }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 4
+                        ShellText { Layout.fillWidth: true; text: root.mediaDisplay ? root.mediaDisplay.title || root.mediaDisplay.identity : "Nothing playing"; textFormat: Text.PlainText; elide: Text.ElideRight; color: Theme.text; font.family: Theme.fontFamily; font.pixelSize: 14; font.weight: Font.Bold }
+                        Caption { Layout.fillWidth: true; text: root.mediaDisplay ? root.mediaDisplay.artist || root.mediaDisplay.identity : "Play media in an app"; textFormat: Text.PlainText; elide: Text.ElideRight }
+                    }
+                }
+                MediaActions { Layout.fillWidth: true; player: root.player; prefix: "control" }
+                AudioVisualizer { Layout.fillWidth: true; playing: !!root.player && root.player.isPlaying }
+                MediaProgress { objectName: "controlMediaProgress"; Layout.fillWidth: true; player: root.player }
+                LyricsView { Layout.fillWidth: true; player: root.player }
+                LiquidComboBox {
+                    id: playerSelector
+                    objectName: "controlPlayerSelector"
+                    visible: root.players.length > 1
+                    Layout.fillWidth: true
+                    model: root.players.map(item => item.identity)
+                    currentIndex: root.players.indexOf(root.player)
+                    Accessible.name: "Media player"
+                    onActivated: root.selectedPlayerName = root.players[currentIndex].dbusName
+                    palette.button: Theme.panel
+                }
+            }
+        }
+    }
+    Component {
+        id: resourcesModule
+        Rectangle {
+            implicitHeight: resources.implicitHeight + 28
+            radius: Theme.smallRadius; color: Theme.surface
+            GlassMaterial { anchors.fill: parent; radius: parent.radius }
+            ColumnLayout {
+                id: resources
+                anchors.fill: parent; anchors.margins: 14
+                RowLayout {
+                    Layout.fillWidth: true
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.preferredWidth: Math.max(60, (resources.width - 12) / 3)
+                        spacing: 5
+                        Caption { text: "CPU" }
+                        ShellText { text: root.numeric(ShellState.system.cpu, "%"); color: Theme.cyan; font.family: Theme.monoFamily; font.pixelSize: 17 }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.preferredWidth: Math.max(60, (resources.width - 12) / 3)
+                        spacing: 5
+                        Caption { text: "RAM" }
+                        ShellText { text: root.numeric(ShellState.system.memoryPercent, "%"); color: Theme.purple; font.family: Theme.monoFamily; font.pixelSize: 17 }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.preferredWidth: Math.max(60, (resources.width - 12) / 3)
+                        spacing: 5
+                        Caption { text: "Battery" }
+                        ShellText { text: root.battery.available ? root.numeric(root.battery.percent, "%") + (root.battery.charging ? " +" : "") : "—"; color: Theme.green; font.family: Theme.monoFamily; font.pixelSize: 17 }
+                    }
+                }
+                Caption {
+                    Layout.fillWidth: true
+                    font.pixelSize: 10
+                    wrapMode: Text.WordWrap
+                    text: {
+                        const details = [];
+                        if (ShellState.system.tempC !== null && ShellState.system.tempC !== undefined)
+                            details.push("Temp " + Math.round(ShellState.system.tempC) + "°C");
+                        if (ShellState.system.memoryUsedGiB !== null && ShellState.system.memoryUsedGiB !== undefined
+                                && ShellState.system.memoryTotalGiB !== null && ShellState.system.memoryTotalGiB !== undefined)
+                            details.push(Number(ShellState.system.memoryUsedGiB).toFixed(1) + " / " + Number(ShellState.system.memoryTotalGiB).toFixed(1) + " GiB");
+                        if (root.battery.available) details.push(root.battery.charging ? "Charging" : "On battery");
+                        return details.length ? details.join("  ·  ") : "Hardware details unavailable";
+                    }
+                }
+                LiquidButton { text: "System monitor"; Layout.fillWidth: true; onClicked: ShellState.selectControlTab("system") }
+            }
+        }
+    }
+    Component {
+        id: captureModule
+        ColumnLayout {
+            LabelText { visible: (ShellState.snapshot.capture || {}).status === "pending"; text: "A capture is pending. Escape cancels niri's selector; use Cancel capture to start again."; Layout.fillWidth: true; wrapMode: Text.Wrap; color: Theme.muted }
+            LiquidButton { text: "Cancel capture"; visible: (ShellState.snapshot.capture || {}).status === "pending"; onClicked: ShellState.run("captureClose") }
+            RecorderWidget { Layout.fillWidth: true; visible: ShellState.preferences.recordingEnabled !== false }
+        }
+    }
+    Component {
+        id: overviewModule
+        Tile { label: "Overview"; detail: "Windows and workspaces"; iconName: "overview"; onClicked: ShellState.togglePanel("overview") }
+    }
+    Component { id: screenModule; Tile { label: "Screen capture"; detail: "Capture your display"; iconName: "camera"; onClicked: ShellState.takeScreenshot("screen") } }
+    Component { id: areaModule; Tile { label: "Select area"; detail: "Choose a region"; iconName: "camera"; onClicked: ShellState.takeScreenshot("area") } }
+    Component { id: windowModule; Tile { label: "Focused window"; detail: "Capture the active window"; iconName: "overview"; onClicked: ShellState.takeScreenshot("window") } }
+}
