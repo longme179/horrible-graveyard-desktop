@@ -1,6 +1,6 @@
 # Symlinks (followed, kept or excluded)
 
-Generated: 2026-10-31 18:05:26 UTC
+Generated: 2026-11-01 10:41:06 UTC
 
 ## Followed - content fetched from the link target into the repo
 - .config/quickshell/lme-shell -> /home/kimhoanglong/lme-fedora-niri-qs (dir link, 702 file(s), 25 MiB)

@@ -1,1 +1,1 @@
-rice-backup 0.3.0
+rice-backup 0.4.0

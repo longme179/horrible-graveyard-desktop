@@ -1,1 +1,1 @@
-files=1589 bytes=31008511 denied=783 scanhits=33 big=2 caches=331 links_followed=3 links_kept=4
+files=1589 bytes=31008512 denied=800 scanhits=33 big=2 caches=331 links_followed=3 links_kept=4

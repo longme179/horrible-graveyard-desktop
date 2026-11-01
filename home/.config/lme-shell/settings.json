@@ -67,7 +67,7 @@
   "osdMargin": 24,
   "osdOutput": "focused",
   "accent": "#72d3f3",
-  "wallpaper": "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-6llg7q.jpg",
+  "wallpaper": "/home/kimhoanglong/Pictures/Wallpaper1/wallhaven-lyz3d2.png",
   "density": "comfortable",
   "appearanceProfiles": [
     {
@@ -383,7 +383,7 @@
   "mediaShapes": true,
   "motionPreset": "jelly-v2",
   "motionSpeed": 0.5,
-  "motionBounce": 0.35,
+  "motionBounce": 1.0,
   "themeOverrides": {},
   "fontOverrides": {
     "body": "Cantarell Extra Bold"
